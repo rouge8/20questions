@@ -1,0 +1,18 @@
+table: spare matrix? (is that possible in a database?)
+colums are objects
+rows are questions
+each cell:
+	weighting between question and object, 
+	
+decide which question to ask
+-like the entrpoy function, look at probable objects and pick question such that the objects get split in half on yes or no
+
+end of the thing (and wrong): add question or object
+	if right: increase question weights for that object
+	if wrong, add a person
+		if already in the database, what do you do?
+		if not in database, add a column for that person with default values based on the question path
+
+then you learn...
+
+table will have totals at the bottom to make search linear, then only the totals will be modified
