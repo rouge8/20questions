@@ -16,3 +16,24 @@ end of the thing (and wrong): add question or object
 then you learn...
 
 table will have totals at the bottom to make search linear, then only the totals will be modified
+
+
+functions:
+
+update_weights(object,questions, values)
+update_data
+add_object(name)
+add_question(question)
+ask_question()
+guess()
+
+IN MEMORY:
+STORE QUESTION PATH AND ANSWERS
+
+AFTER PROGRAM GUESSES:
+if wrong:
+    decrease weights for that object on those questions
+    CONTINUE STORING SO THAT THEY CAN BE INCREASED FOR EVENTUAL RIGHTNESS
+    offer option: continue? or teach the program?
+if right:
+    increase
