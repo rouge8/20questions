@@ -6,17 +6,21 @@
 import web
 from config import db
 
-def add_object(name):
+def add_object(name, asked_questions = {}):
     # WHY THE RETURNS?
     object_id = db.insert('objects', name=name)
     # initialize weights for each question in data
     questions = get_questions()
     for question in questions:
-        add_data(object_id, question.id) # this is inconsistent
+        if question.id in asked_questions: # learning from user
+            value = asked_questions[question.id]
+        else:
+            value = 0
+        add_data(object_id, question.id, value) # this is inconsistent
         
 
 def add_question(question):
-    question_id = db.insert('questions', question=question)
+    question_id = db.insert('questions', text=question)
     # initialize weights for each object in data
     objects = get_objects()
     for object in objects:
@@ -52,3 +56,4 @@ def flush_tables():
     db.query('DELETE FROM objects')
     db.query('DELETE FROM data')
     db.query('DELETE FROM questions')
+

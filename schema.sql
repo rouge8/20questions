@@ -8,7 +8,7 @@ CREATE TABLE objects (
 
 CREATE TABLE questions (
     id integer primary key,
-    question text,
+    text text,
     created date
 );
 

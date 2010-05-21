@@ -40,3 +40,6 @@ if wrong:
     offer option: continue? or teach the program?
 if right:
     increase
+    
+
+RENAME VALUE COLUMN IN DATA TO WEIGHT
