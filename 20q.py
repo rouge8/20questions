@@ -7,6 +7,7 @@
 
 ###################### COME UP WITH BETTER VARIABLE NAMES
 ###################### db.select returns list
+############################## USE db.select(what=)!!!!!!!!
 
 
 import web
@@ -25,7 +26,6 @@ def guess():
         print 'Oh snaps, I\'ve got nothing.'
         learn_character()
     else:
-        #max = max([objects_values[object] for object in objects_values])
         max = float('-inf')
         for object in objects_values:
             value = objects_values[object]
@@ -35,14 +35,26 @@ def guess():
         chosen = config.db.select('objects', vars=locals(), where='id = $id')[0]
         print "I choose: %s" %(chosen.name)
         right = raw_input('Is this correct?')
-        if right != 'y':
+        if right == 'n':
             learn_character()
+        elif right == 'y':
+            learn(chosen.id)
+            
 
 
 def learn_character():
     name = raw_input("Won't you please tell me who you were thinking of?  ")
-    model.add_object(name, asked_questions)
+    object = model.get_object_by_name(name)
+    if object: # character in database
+        learn(object.id)
+    else:
+        model.add_object(name, asked_questions)
         
+def learn(object_id):
+    for question in asked_questions:
+        current_weight = model.get_value(object_id, question)
+        new_weight = current_weight + asked_questions[question]
+        model.update_data(object_id, question, new_weight)
 
 def ask_question(question_id=None):
     # pop 50 top things from heap
@@ -78,7 +90,8 @@ def play_game():
     for object in objects:
         objects_values[object.id] = 0
     # ask AN INITIAL QUESTION (or more than one?)
-    ask_question(1) #### ask if character is real
+    for i in range(1,4):
+        ask_question(i) #### ask initial questions
     guess()
     # then ask questions until 20 reached #### maybe in a function with parameter = number of questions to ask
     #   ######################### this way if wrong: ask_questions(10) or something like that
@@ -118,10 +131,7 @@ def initialize_questions():
     model.add_question('Does the character like trains?')
     model.add_question('Is the character dead?')
 
-if __name__ == '__main__':
-    #model.flush_tables()
-    #initialize_questions()
-    
+if __name__ == '__main__':    
     play_game()
     
     for thing in model.get_data():

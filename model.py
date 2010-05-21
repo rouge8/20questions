@@ -7,7 +7,6 @@ import web
 from config import db
 
 def add_object(name, asked_questions = {}):
-    # WHY THE RETURNS?
     object_id = db.insert('objects', name=name)
     # initialize weights for each question in data
     questions = get_questions()
@@ -34,14 +33,18 @@ def update_data(object_id, question_id, value):
     db.update('data', where='object_id = $object_id AND question_id = $question_id', vars=locals(), value=value)
     # LOOK UP THE SYNTAX FOR THIS SO WE UNDERSTAND WHAT IS GOING ON
     
-def update_weights(object_id, questions, values):
-    # list of questions by id eg. [1,2,3,5,61] with corresponding list
-    # of values eg. [100,2,5,6,14]
-    # MAYBE USE A DICTIONARY INSTEAD? Andy likes.
-    for i in range(len(questions)):
-        question_id = questions[i]
-        value = values[i]
-        update_data(object_id, question_id, value)
+def update_weights(object_id, asked_questions):
+    # Dictionary {question: value}
+    for question in asked_questions:
+        value = asked_questions[question]
+        update_data(object_id, question, value)
+
+def get_value(object_id, question_id):
+    where = 'object_id=%d AND question_id=%d' %(object_id, question_id)
+    try:
+        return db.select('data', vars=locals(), where=where)[0].value
+    except IndexError:
+        return None
 
 def get_objects():
     return db.select('objects')
@@ -56,4 +59,10 @@ def flush_tables():
     db.query('DELETE FROM objects')
     db.query('DELETE FROM data')
     db.query('DELETE FROM questions')
+    
+def get_object_by_name(name):
+    try:
+        return db.select('objects', vars=locals(), where='name=$name')[0]
+    except IndexError:
+        return None
 
