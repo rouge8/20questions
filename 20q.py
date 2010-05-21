@@ -20,7 +20,8 @@ def ask_question():
     pass
 
 def play_game():
-    # initialize heap WITH ALL WEIGHTS AT SOME VALUE OR ZERO
+    # initialize heap WITH ALL WEIGHTS AT ZERO
+    objects = model.get_objects()
     # ask AN INITIAL QUESTION (or more than one?)
     # eg. plant/animal/thing or real/fictional, etc.
     # then ask questions until 20 reached #### maybe in a function with parameter = number of questions to ask
@@ -57,4 +58,13 @@ if wrong:
 '''
 
 if __name__ == '__main__':
-    pass
+    model.flush_tables()
+    
+    model.add_object('Dan')
+    model.add_object('Andy')
+    model.add_question('trains')
+    model.add_question('fish')
+    model.add_question('human')
+    
+    for thing in model.get_data():
+        print thing.object_id, thing.question_id, thing.value

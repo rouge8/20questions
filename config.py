@@ -4,5 +4,5 @@
 #       config.py
 
 import web
-dbn = web.database(dbn='sqlite', db='20q.db')
-debug = True
+db = web.database(dbn='sqlite', db='20q.db')
+debug = False
