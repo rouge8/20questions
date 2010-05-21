@@ -18,12 +18,15 @@ then you learn...
 table will have totals at the bottom to make search linear, then only the totals will be modified
 
 
+when we start a game, we need to initialize a dictionary that will store the current weight for each object in the game {object: current_value}
+OR: PRIORITY QUEUE/HEAP
+
 functions:
 
-update_weights(object,questions, values)
-update_data
-add_object(name)
-add_question(question)
+update_weights(object,questions, values) DONE
+update_data DONE
+add_object(name) DONEISH
+add_question(question) DONEISH
 ask_question()
 guess()
 
