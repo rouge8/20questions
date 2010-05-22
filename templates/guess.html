@@ -1,0 +1,15 @@
+$def with (chosen)
+
+$if chosen:
+    <p>I guess....</p>
+    <h1>$chosen.name</h1>
+    <p>Was I right?</p>
+    <form action="/guess/$chosen.id" method="post">
+        <input type="submit" name="answer" value="yes">
+        <input type="submit" name="answer" value="no">
+    </form>
+$else:
+    <p>I've got nothing.</p>
+    <form action="/guess" method="post">
+        <input type="submit" name="answer" value="teach me">
+    </form>

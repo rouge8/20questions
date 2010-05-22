@@ -43,3 +43,15 @@ if right:
     
 
 RENAME VALUE COLUMN IN DATA TO WEIGHT
+
+half weights are positive and half are negative
+
+sum of positives and negatives?
+    heap: good way of organizing
+    priority queue based on entropy
+    define a comparable function
+    
+    compute entropies on the fly?
+    IF NOT:
+        store entropies with question - whenever you change anything with the question, store the weight
+            e.g. store positives and negatives

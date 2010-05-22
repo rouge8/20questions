@@ -1,0 +1,20 @@
+$def with (question)
+
+
+$if question == 'begin':
+    <h1>Think of a character...</h1>
+    <br />
+    <form action="/begin" method="post">
+        <input type="submit" value="Begin!">
+    </form>
+$elif question:
+    <p>$question.text</p>
+    <form action="/answer/$question.id" method="post">
+        <input type="submit" name="answer" value="yes">
+        <br / >
+        <input type="submit" name="answer" value="unsure">
+        <br />
+        <input type="submit" name="answer" value="no">
+    </form>
+$else:
+    <p>I DO NOT KNOW WHAT TO DO HERE. (guess)</p>
