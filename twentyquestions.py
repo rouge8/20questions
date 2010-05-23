@@ -193,12 +193,6 @@ def load_objects_values():
     for object in objects:
         objects_values[object.id] = 0
 
-def initialize_questions():
-    #FIX THIS
-    model.add_question('Is the character real?')
-    model.add_question('Does the character like trains?')
-    model.add_question('Is the character dead?')
-
 def reset_game():
     global asked_questions
     global initial_questions

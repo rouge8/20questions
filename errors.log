@@ -30,3 +30,7 @@ KeyError: 1
 
 98.228.181.68:47083 - - [22/May/2010 19:16:22] "HTTP/1.1 POST /answer/11" - 500 Internal Server Error
 
+
+SOMETIMES JUST GETS IN A LOOP OF GUESSING SCHILLER - after guessing and then pressing begin
+
+only working for one person at a time
