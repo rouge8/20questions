@@ -1,4 +1,4 @@
-$def with (question)
+$def with (question, count)
 
 
 $if question == 'begin':
@@ -8,7 +8,7 @@ $if question == 'begin':
         <input type="submit" value="Begin!">
     </form>
 $elif question:
-    <p>$question.text</p>
+    <p>$count -- $question.text</p>
     <form action="/answer/$question.id" method="post">
         <input type="submit" name="answer" value="yes">
         <br / >

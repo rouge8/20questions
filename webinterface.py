@@ -6,7 +6,7 @@
 import web
 import config, model
 import twentyquestions as game
-count = 0
+count = 1
 
 urls = (
     '/', 'index',
@@ -28,10 +28,9 @@ class index:
             question = 'begin'
         else:
             question = game.choose_question()
-            count += 1
-            if question == None or count == 20:
+            if question == None or count > 20:
                 raise web.seeother('/guess')
-        return render.index(question)
+        return render.index(question,count)
 
 class guess:
     def GET(self):
@@ -69,11 +68,13 @@ class begin:
 
 class answer:
     def POST(self, question_id):
+        global count
+        
         question_id = int(question_id) # otherwise it's unicode
         a = web.input().answer
         if a in ['yes','no','unsure']: answer = eval('game.' + a)
         else: answer = 0
-        
+        count += 1
         game.update_local_knowledgebase(question_id, answer)
         raise web.seeother('/')
 
