@@ -1,11 +1,17 @@
-IMPROVE LEARNING ON WRONG ANSWERS (cutting in half thing?)
-
 adjust weights
 ask/add more questions
 clean up code (esp. select statements)
 
-CHOOSING QUESTIONS
-
 BETTER PICKING ALGORITHM FOR ANSWERS
 
 BETTER QUESTION PICKING ALGORITHM?
+
+RECORD USER
+
+if it's wrong, present a list of characters that are 'close' and let the user say if it's any of them
+
+document!
+
+prettify webinterface
+
+ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
