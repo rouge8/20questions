@@ -8,6 +8,9 @@ $if chosen:
         <input type="submit" name="answer" value="yes">
         <input type="submit" name="answer" value="no">
     </form>
+    <p>Played $chosen.times_played times.
+    $if chosen.times_played >0:
+        Last played $chosen.last_played.</p>
 $else:
     <p>I've got nothing.</p>
     <form action="/guess" method="post">
