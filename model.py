@@ -99,8 +99,6 @@ def get_data_by_object_id(object_id):
 
 def update_times_played(object_id):
     current = db.select('objects', vars=locals(), where='id=$object_id')[0].times_played
-    try:
-        db.update('objects', where='id = $object_id', vars=locals(), times_played=current+1)
-    except TypeError:
-        current = 0
-        db.update('objects', where='id = $object_id', vars=locals(), times_played=current+1)
+    if current == None: current = 0
+    print 'TIMES PLAYED', current + 1
+    db.update('objects', where='id = $object_id', vars=locals(), times_played=current+1)

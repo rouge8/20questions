@@ -40,13 +40,13 @@ class guess:
         return render.guess(chosen)
     def POST(self, chosen_id=None):
         a = web.input().answer
-        print a == 'yes'
         if a in ['no', 'teach me']:
             raise web.seeother('/learn')
         elif a in ['yes']:
             game.learn(int(chosen_id))
-            raise web.seeother('/') ### some sort of page asking about new game instead of /
-
+            game.reset_game()
+            raise web.seeother('/')
+            
 class learn:
     def GET(self):
         return render.learn()
@@ -79,7 +79,6 @@ class answer:
 
 if __name__ == '__main__':
     app = web.application(urls, globals())
-    #if web.config.debug:
-    #    app.internalerror = web.debugerror
-    app.internalerror = web.debugerror
+    if web.config.debug:
+        app.internalerror = web.debugerror
     app.run()

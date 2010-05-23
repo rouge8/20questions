@@ -37,11 +37,12 @@ def guess():
         return chosen
             
 def learn_character(name):
-    object = model.get_object_by_name(name)
-    if object: # character in database
-        learn(object.id)
-    else:
-        model.add_object(name, asked_questions) # maybe scale the numbers so more than 1
+    if name.strip() != '':
+        object = model.get_object_by_name(name)
+        if object: # character in database
+            learn(object.id)
+        else:
+            model.add_object(name, asked_questions) # maybe scale the numbers so more than 1
         
 def add_question(object):
     question = raw_input("Question: ")
@@ -58,7 +59,7 @@ def learn(object_id):
             else:
                 new_weight = current_weight / 2
         model.update_data(object_id, question, new_weight)
-        model.update_times_played(object_id)
+    model.update_times_played(object_id)
 
 def choose_question():    
     

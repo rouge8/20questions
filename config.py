@@ -4,5 +4,6 @@
 #       config.py
 
 import web
-web.config.debug = False
+web.config.debug = True
 db = web.database(dbn='sqlite', db='20q.db')
+RECORD_USER = True

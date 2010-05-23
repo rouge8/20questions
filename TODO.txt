@@ -3,11 +3,9 @@ IMPROVE LEARNING ON WRONG ANSWERS (cutting in half thing?)
 adjust weights
 ask/add more questions
 clean up code (esp. select statements)
-question suggestions
-"I don't know" option
-web interface
 
 CHOOSING QUESTIONS
 
 BETTER PICKING ALGORITHM FOR ANSWERS
 
+BETTER QUESTION PICKING ALGORITHM?
