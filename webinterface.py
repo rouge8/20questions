@@ -100,6 +100,7 @@ class answer:
         game.update_local_knowledgebase(question_id, answer)
         raise web.seeother('/')
 
+
 if __name__ == '__main__':
     app = web.application(urls, globals())
     if web.config.debug:
