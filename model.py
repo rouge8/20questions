@@ -101,3 +101,10 @@ def update_times_played(object_id):
     current = db.select('objects', vars=locals(), where='id=$object_id')[0].times_played
     if current == None: current = 0
     db.update('objects', where='id = $object_id', vars=locals(), times_played=current+1)
+
+def num_objects():
+    return db.query('select COUNT(*) from objects;')
+
+def record_playlog(object_id, asked_questions):
+    print locals()
+    db.insert('playlog', object_id=object_id, data=str(asked_questions))

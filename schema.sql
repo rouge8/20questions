@@ -18,6 +18,12 @@ CREATE TABLE data (
     value integer
 );
 
+CREATE TABLE playlog (
+    object_id integer,
+    data text
+);
+    
+
 CREATE TRIGGER new_object_created after insert on objects
 begin
 update objects set created = datetime('now')

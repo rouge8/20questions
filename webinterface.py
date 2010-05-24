@@ -24,8 +24,8 @@ class index:
         # show the index!
         global count
         
-        print game.asked_questions
-        print game.initial_questions
+        #print game.asked_questions
+        #print game.initial_questions
         
         if game.asked_questions == {} and game.initial_questions == []:
             question = 'begin'
@@ -49,9 +49,9 @@ class guess:
             
             game.reset_game()
             
-            print 'ASKED QUESTION:', game.asked_questions
-            print 'INITIAL QUESTION:', game.initial_questions
-            print 'OBJECTS VALUES:', game.objects_values
+            #print 'ASKED QUESTION:', game.asked_questions
+            #print 'INITIAL QUESTION:', game.initial_questions
+            #print 'OBJECTS VALUES:', game.objects_values
             
             raise web.seeother('/')
             
@@ -69,9 +69,9 @@ class learn:
         game.reset_game()
         # resets game data and starts a new game
         
-        print 'ASKED QUESTION:', game.asked_questions
-        print 'INITIAL QUESTION:', game.initial_questions
-        print 'OBJECTS VALUES:', game.objects_values
+        #print 'ASKED QUESTION:', game.asked_questions
+        #print 'INITIAL QUESTION:', game.initial_questions
+        #print 'OBJECTS VALUES:', game.objects_values
         
         raise web.seeother('/')
 
@@ -84,7 +84,7 @@ class begin:
         game.load_initial_questions()
         game.load_objects_values()
         
-        print game.initial_questions
+        #print game.initial_questions
         
         raise web.seeother('/')
 

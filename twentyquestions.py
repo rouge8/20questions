@@ -51,15 +51,19 @@ def add_question(object):
 def learn(object_id):
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
-        if (current_weight > 0 and asked_questions[question] > 0) or (current_weight <= 0 and asked_questions[question] <= 0):
-            new_weight = current_weight + asked_questions[question]
-        else:
-            if current_weight == 1:
-                new_weight = 0
-            else:
-                new_weight = current_weight / 2
+        new_weight = current_weight + asked_questions[question]
+        #if (current_weight > 0 and asked_questions[question] > 0) or (current_weight <= 0 and asked_questions[question] <= 0):
+            #new_weight = current_weight + asked_questions[question]
+        #else:
+            #if current_weight == 1:
+                #new_weight = 0
+            #else:
+                #new_weight = current_weight / 2
         model.update_data(object_id, question, new_weight)
     model.update_times_played(object_id)
+    
+    if config.RECORD_USER:
+        model.record_playlog(object_id, asked_questions)
 
 def choose_question():    
     
@@ -67,10 +71,10 @@ def choose_question():
         question = initial_questions.pop(0)
     else:
         sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()])
-        if len(sorted_objects_values) <= 50:
+        if len(sorted_objects_values) <= 5: ### possibly some proportion of the objects in the database
             max = len(sorted_objects_values)
         else:
-            max = 50
+            max = 5
         
         sorted_objects_values.reverse()
         most_likely_objects = sorted_objects_values[:max]
