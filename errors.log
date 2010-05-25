@@ -34,3 +34,39 @@ KeyError: 1
 SOMETIMES JUST GETS IN A LOOP OF GUESSING SCHILLER - after guessing and then pressing begin
 
 only working for one person at a time
+
+0.0 (1): SELECT * FROM data WHERE question_id=27
+Traceback (most recent call last):
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 242, in process
+    return self.handle()
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 233, in handle
+    return self._delegate(fn, self.fvars, args)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 415, in _delegate
+    return handle_class(cls)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 390, in handle_class
+    return tocall(*args)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/webinterface.py", line 103, in POST
+    game.update_local_knowledgebase(question_id, answer)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/twentyquestions.py", line 119, in update_local_knowledgebase
+    objects_values[weight.object_id] += answer*weight.value
+KeyError: 43
+
+98.206.19.166:61702 - - [25/May/2010 00:32:13] "HTTP/1.1 POST /answer/27" - 500 Internal Server Error
+98.206.19.166:61702 - - [25/May/2010 00:32:13] "HTTP/1.1 GET /favicon.ico" - 404 Not Found
+0.0 (1): SELECT * FROM data WHERE question_id=32
+Traceback (most recent call last):
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 242, in process
+    return self.handle()
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 233, in handle
+    return self._delegate(fn, self.fvars, args)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 415, in _delegate
+    return handle_class(cls)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/web/application.py", line 390, in handle_class
+    return tocall(*args)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/webinterface.py", line 103, in POST
+    game.update_local_knowledgebase(question_id, answer)
+  File "/home/andy/school/cs321_AI/work_with_dan/20questions/twentyquestions.py", line 119, in update_local_knowledgebase
+    objects_values[weight.object_id] += answer*weight.value
+KeyError: 43
+
+DO THESE OCCUR ONLY WHEN QUESTIONS > THAN OBJECTS???

@@ -1,13 +1,15 @@
 $def with(nearby_objects)
 
+$# <script src="static/jquery-1.4.2.min.js"></script>
+$# <script src="static/button_actions.js"></script>
 
 <form action="/learn" method="post">
     <h1>Who were you thinking of?</h1>
     $for object in nearby_objects:
-        <input type="radio" name="name" value="$object.name">$object.name
+        <input type="radio" name="name" class="known" value="$object.name">$object.name
         <br />
     
-    <input type="radio" name="name" value="other"><input type="text" name="name">
+    <input type="radio" name="name" class="unknown"><input type="text" name="name" class="new_character"> $# readonly="readonly">
     <br />
     <h2>Suggest a question?</h2>
     <input type="text" name="question">
