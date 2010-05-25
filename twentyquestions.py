@@ -68,23 +68,21 @@ def get_nearby_objects(how_many=10): ## need better variable name
     sorted_objects_values.reverse()  ######### change way it sorts
     
     nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
-    
-    print nearby_objects
-    
+        
     return nearby_objects
     
     
 
-def choose_question():    
+def choose_question(how_many=5):    
     
     if initial_questions:
         question = initial_questions.pop(0)
     else:
         sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()])
-        if len(sorted_objects_values) <= 5: ### possibly some proportion of the objects in the database
+        if len(sorted_objects_values) <= how_many: ### possibly some proportion of the objects in the database
             max = len(sorted_objects_values)
         else:
-            max = 5
+            max = how_many
         
         sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]

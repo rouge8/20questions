@@ -7,7 +7,7 @@ $def with(nearby_objects)
         <input type="radio" name="name" value="$object.name">$object.name
         <br />
     
-    <input type="radio" name="name" value="other"><input type="text" name="question">
+    <input type="radio" name="name" value="other"><input type="text" name="name">
     <br />
     <h2>Suggest a question?</h2>
     <input type="text" name="question">
@@ -18,13 +18,3 @@ $def with(nearby_objects)
 
 
 $# COMBINE THE TWO FORMS. DO SOME FANCY TRICKS (LIKE JAVASCRIPT! AND MORE!) to not let them select radio choice and enter new name
-
-<form action="/learn" method="post">
-    <h1>Who were you thinking of?</h1>
-    <input type="text" name="name">
-    <br />
-    <h2>Suggest a question?</h2>
-    <input type="text" name="question">
-    <br />
-    <input type="submit" value="submit">
-</form>

@@ -4,11 +4,6 @@ clean up code (esp. select statements)
 
 BETTER PICKING ALGORITHM FOR ANSWERS
 
-BETTER QUESTION PICKING ALGORITHM?
-
-
-if it's wrong, present a list of characters that are 'close' and let the user say if it's any of them
-
 document!
 
 prettify webinterface
