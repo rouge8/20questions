@@ -56,10 +56,11 @@ def learn(object_id, right=True):
             current_weight = 0
         if right:
             new_weight = current_weight + asked_questions[question]
+            model.update_times_played(object_id)
         else:
             new_weight = current_weight - asked_questions[question] ######## SCALE?
         model.update_data(object_id, question, new_weight)
-    model.update_times_played(object_id)
+    
     
     if config.RECORD_USER:
         model.record_playlog(object_id, asked_questions, right)

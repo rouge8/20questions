@@ -23,10 +23,7 @@ class index:
     def GET(self):
         # show the index!
         global count
-        
-        #print game.asked_questions
-        #print game.initial_questions
-        
+                
         if game.asked_questions == {} and game.initial_questions == []:
             question = 'begin'
         else:
@@ -42,6 +39,11 @@ class guess:
         return render.guess(chosen)
     def POST(self, chosen_id=None):
         a = web.input().answer
+        
+        if not(chosen_id):
+            chosen_id=1
+            print 'CHOOSING NONE!!!!!!!'
+            print 'asked questions: ', game.asked_questions
         if a in ['no', 'teach me']:
             game.learn(int(chosen_id), False) # learns that the guess was wrong
             
@@ -71,11 +73,7 @@ class learn:
             
         game.reset_game()
         # resets game data and starts a new game
-        
-        #print 'ASKED QUESTION:', game.asked_questions
-        #print 'INITIAL QUESTION:', game.initial_questions
-        #print 'OBJECTS VALUES:', game.objects_values
-        
+                
         raise web.seeother('/')
 
 class begin:
@@ -86,9 +84,7 @@ class begin:
         
         game.load_initial_questions()
         game.load_objects_values()
-        
-        #print game.initial_questions
-        
+                
         raise web.seeother('/')
 
 class answer:
