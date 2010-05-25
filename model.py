@@ -10,6 +10,8 @@ from config import db
 def add_object(name, asked_questions = {}):
     object_id = db.insert('objects', name=name)
     # initialize weights for each question in data
+    '''
+    Python does not like this section for some reason. It somehow is trying to add data or something. I would just get rid of it since we never use it, but I want to know why it is crashing on this.
     questions = get_questions()
     for question in questions:
         if question.id in asked_questions: # learning from user
@@ -17,7 +19,7 @@ def add_object(name, asked_questions = {}):
         else:
             value = 0
         add_data(object_id, question.id, value) # this is inconsistent
-    
+    '''
     return object_id
         
 
@@ -34,7 +36,6 @@ def add_data(object_id, question_id, value=0):
 
 def update_data(object_id, question_id, value):
     db.update('data', where='object_id = $object_id AND question_id = $question_id', vars=locals(), value=value)
-    # LOOK UP THE SYNTAX FOR THIS SO WE UNDERSTAND WHAT IS GOING ON
     
 def update_weights(object_id, asked_questions):
     # Dictionary {question: value}
@@ -79,7 +80,7 @@ def get_question_by_id(id):
     try:
         return db.select('questions', vars=locals(), where='id=$id')[0]
     except IndexError:
-        return None
+        return None ############ maybe 0?
         
 def get_question_by_text(text):
     try:

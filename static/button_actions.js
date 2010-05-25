@@ -1,6 +1,3 @@
-<script>
-
-
 $('.unknown').change(function() {
     if($('.new_character').attr('readonly') == true) {
         $('.new_character').removeAttr('readonly');
@@ -18,4 +15,3 @@ $('.new_character').click(function() {
         $('.unknown').attr('checked', true);
     }
 });
-</script>

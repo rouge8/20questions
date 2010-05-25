@@ -3,7 +3,6 @@
 #
 #       twentyquestions.py
 
-'''DO WE WANT PROBABLY/DOUBTFUL OPTIONS??'''
 
 ###################### COME UP WITH BETTER VARIABLE NAMES
 ###################### db.select returns list
@@ -50,9 +49,11 @@ def add_question(object):
     question = raw_input("Question: ")
     model.add_question(question)
         
-def learn(object_id, right = True):
+def learn(object_id, right=True):
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
+        if not(current_weight):
+            current_weight = 0
         if right:
             new_weight = current_weight + asked_questions[question]
         else:
