@@ -7,19 +7,13 @@ import web
 #import config
 from config import db
 
-def add_object(name, asked_questions = {}):
+def add_object(name):
     object_id = db.insert('objects', name=name)
     # initialize weights for each question in data
-    '''
-    Python does not like this section for some reason. It somehow is trying to add data or something. I would just get rid of it since we never use it, but I want to know why it is crashing on this.
     questions = get_questions()
     for question in questions:
-        if question.id in asked_questions: # learning from user
-            value = asked_questions[question.id]
-        else:
-            value = 0
-        add_data(object_id, question.id, value) # this is inconsistent
-    '''
+        add_data(object_id, question.id, 0) # this is inconsistent
+    
     return object_id
         
 
