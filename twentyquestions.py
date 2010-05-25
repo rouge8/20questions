@@ -87,17 +87,14 @@ def choose_question(how_many=5):
         sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]
         
-        
         questions = model.get_questions()
         best_question_entropy = abs(float('inf'))
         best_question = None
-        
         
         for question in questions: # loop through all the questions
             if not(question.id in asked_questions): # if we have not already asked it, condider it
                 question_entropy = 0
                 for object in most_likely_objects:
-                    #print object
                     if model.get_value(object[1], question.id) > 0: # do we add values or should we count yeses and no's
                         question_entropy += 1
                     else:
@@ -114,19 +111,19 @@ def update_local_knowledgebase(question_id, answer):
         raise Exception('Invalid Answer')
     else:
         weights = model.get_data_by_question_id(question_id)
-        #print objects_values
         for weight in weights:
-            objects_values[weight.object_id] += answer*weight.value
-        #print objects_values
+            if weight.object_id in objects_values:
+                '''This if statement solves a keyerror exception that occurs when
+                   an object is added to the database at the same time another player
+                   is playing, but before weights is created. If this happens,
+                   weights contains objects that aren't in objects_values, so you
+                   get a keyerror when trying to update the weight of that object.
+                   This could also be fixed by only retreiving weights for objects
+                   in objects_values, but that is probably slower.'''
+                objects_values[weight.object_id] += answer*weight.value
         asked_questions[question_id] = answer
 
-def ask_question():
-    # pop 50 top things from heap
-    # ask question such that it splits the data in halfish
-    # half get negative weights, half get positive weights
-    #global asked_questions
-    #print asked_questions
-    
+def ask_question():    
     question = choose_question()
     
     if question == None:
@@ -163,37 +160,6 @@ def play_game():
     for i in range(10):
         ask_question()
     guess_and_learn()
-    # then ask questions until 20 reached #### maybe in a function with parameter = number of questions to ask
-    #   ######################### this way if wrong: ask_questions(10) or something like that
-    #   get input from user
-    #   do magic
-    #       if it 'knows':
-    #           ask random questions for more info. (sneaky)
-    # when 20:
-    #   guess
-    #   right?
-    #       increase weights for object/questions (learn function)
-    #   wrong?
-    #       decrease weights for things
-    #       offer choices:
-    #           continue?
-    #               ask 10ish more questions? OR UNTIL VALUE REACHES SOMETHING? eg. it knows
-    #           tell answer?
-    #               add new thing, give it weights
-    #               also offer chance for new/useful question
-    #                   DON'T AUTOMATICALLY ADD THE QUESTION or obj
-
-''' LEARNING ALGORITHM TIME
-inputs: object, set of questions, responses, correct/incorrect
-if correct:
-    increase weights by X ?????????????
-if wrong:
-    HALVE weights ??????????????? //can still have negative weights, this brings closer to zero
-    // if weight is 1, cut in half
-'''
-
-''' ASKING ALGORITHM
-'''
 
 def load_initial_questions(): ############## CLEAN THIS UP
     global initial_questions
@@ -203,7 +169,10 @@ def load_objects_values():
     global objects_values
     objects = model.get_objects()
     for object in objects:
+        print object
         objects_values[object.id] = 0
+    
+    print objects_values
 
 def reset_game():
     global asked_questions
