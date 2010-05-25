@@ -65,6 +65,18 @@ def learn(object_id):
     if config.RECORD_USER:
         model.record_playlog(object_id, asked_questions)
 
+def get_nearby_objects(how_many=10): ## need better variable name
+    sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
+    sorted_objects_values.reverse()  ######### change way it sorts
+    
+    nearby_objects = [sorted_objects_values[i][1] for i in range(how_many)]
+    
+    print nearby_objects
+    
+    return nearby_objects
+    
+    
+
 def choose_question():    
     
     if initial_questions:
@@ -76,7 +88,7 @@ def choose_question():
         else:
             max = 5
         
-        sorted_objects_values.reverse()
+        sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]
         
         

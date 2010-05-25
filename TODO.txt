@@ -6,7 +6,6 @@ BETTER PICKING ALGORITHM FOR ANSWERS
 
 BETTER QUESTION PICKING ALGORITHM?
 
-RECORD USER
 
 if it's wrong, present a list of characters that are 'close' and let the user say if it's any of them
 

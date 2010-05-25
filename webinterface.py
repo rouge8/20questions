@@ -36,13 +36,14 @@ class index:
         return render.index(question,count)
 
 class guess:
-    def GET(self):
+    def GET(self, chosen_id=None):
         # guess!
         chosen = game.guess()
         return render.guess(chosen)
     def POST(self, chosen_id=None):
         a = web.input().answer
         if a in ['no', 'teach me']:
+            game.learn(int(chosen_id)) ##########
             raise web.seeother('/learn')
         elif a in ['yes']:
             game.learn(int(chosen_id))
@@ -57,7 +58,8 @@ class guess:
             
 class learn:
     def GET(self):
-        return render.learn()
+        nearby_objects = game.get_nearby_objects(10)
+        return render.learn(nearby_objects)
     def POST(self):
         name = web.input().name
         question = web.input().question
