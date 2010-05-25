@@ -42,34 +42,32 @@ def learn_character(name):
         if object: # character in database
             learn(object.id)
         else:
-            model.add_object(name, asked_questions) # maybe scale the numbers so more than 1
+            new_object_id = model.add_object(name) ### adds to database and trains
+            learn(new_object_id)
+            # maybe scale the numbers so more than 1
         
 def add_question(object):
     question = raw_input("Question: ")
     model.add_question(question)
         
-def learn(object_id):
+def learn(object_id, right = True):
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
-        new_weight = current_weight + asked_questions[question]
-        #if (current_weight > 0 and asked_questions[question] > 0) or (current_weight <= 0 and asked_questions[question] <= 0):
-            #new_weight = current_weight + asked_questions[question]
-        #else:
-            #if current_weight == 1:
-                #new_weight = 0
-            #else:
-                #new_weight = current_weight / 2
+        if right:
+            new_weight = current_weight + asked_questions[question]
+        else:
+            new_weight = current_weight - asked_questions[question] ######## SCALE?
         model.update_data(object_id, question, new_weight)
     model.update_times_played(object_id)
     
     if config.RECORD_USER:
-        model.record_playlog(object_id, asked_questions)
+        model.record_playlog(object_id, asked_questions, right)
 
 def get_nearby_objects(how_many=10): ## need better variable name
     sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
     sorted_objects_values.reverse()  ######### change way it sorts
     
-    nearby_objects = [sorted_objects_values[i][1] for i in range(how_many)]
+    nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
     
     print nearby_objects
     

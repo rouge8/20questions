@@ -17,6 +17,8 @@ def add_object(name, asked_questions = {}):
         else:
             value = 0
         add_data(object_id, question.id, value) # this is inconsistent
+    
+    return object_id
         
 
 def add_question(question):
@@ -105,6 +107,6 @@ def update_times_played(object_id):
 def num_objects():
     return db.query('select COUNT(*) from objects;')
 
-def record_playlog(object_id, asked_questions):
+def record_playlog(object_id, asked_questions, right):
     print locals()
-    db.insert('playlog', object_id=object_id, data=str(asked_questions))
+    db.insert('playlog', object_id=object_id, data=str(asked_questions), right=right)

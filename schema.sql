@@ -20,7 +20,8 @@ CREATE TABLE data (
 
 CREATE TABLE playlog (
     object_id integer,
-    data text
+    data text,
+    right boolean
 );
     
 
