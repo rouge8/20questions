@@ -43,7 +43,6 @@ class guess:
     def POST(self, chosen_id=None):
         a = web.input().answer
         if a in ['no', 'teach me']:
-            game.learn(int(chosen_id)) ##########
             raise web.seeother('/learn')
         elif a in ['yes']:
             game.learn(int(chosen_id))
