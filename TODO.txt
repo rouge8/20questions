@@ -18,3 +18,5 @@ http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-ref
 http://trac.edgewall.org/wiki/PySqlite#DetermineactualSQLiteandPySqliteversion
 
 DOES DAN HAVE A BROKEN PYTHON PATH?
+
+FIX UP LEARN PAGE SO ENTIRE BACKGROUND IS BLACK

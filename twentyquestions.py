@@ -40,15 +40,12 @@ def learn_character(name):
         object = model.get_object_by_name(name)
         if object: # character in database
             learn(object.id)
+            return object.id
         else:
             new_object_id = model.add_object(name) ### adds to database and trains
             learn(new_object_id)
             # maybe scale the numbers so more than 1
             return new_object_id
-        
-def add_question(object):
-    question = raw_input("Question: ")
-    model.add_question(question)
         
 def learn(object_id, right=True):
     for question in asked_questions:

@@ -69,18 +69,25 @@ class learn:
             name = web.input().new_character
         question = web.input().question
         new_question_answer = web.input().new_question_answer
+        if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
+        else: answer = game.unsure
+        
         print "NEW QUETSION ANS", new_question_answer
         if question.strip() != '' and not(model.get_question_by_text(question.strip())):
             # makes sure the question is not already in the database
             new_question_id = model.add_question(question)
+        else:
+            new_question_id = model.get_question_by_text(question.strip()).id
+            # if question already in DB, returns id. else returns None
+            
 
         new_object_id = game.learn_character(name)
-        if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
-        else: answer = game.unsure
+        
         print "OOJB", new_object_id
         print "QEUS", new_question_id
         print
-        model.update_data(new_object_id, new_question_id, answer)
+        if new_question_id and new_object_id:
+            model.update_data(new_object_id, new_question_id, answer)
             
         game.reset_game()
         # resets game data and starts a new game
