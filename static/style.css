@@ -1,0 +1,30 @@
+@font-face {
+font-family: 'UniversalisADFStdRegular';
+src: url('/static/f/UniversalisADFStd-Regular.eot');
+src: local('Universalis ADF Std'), local('UniversalisADFStd-Regular'), url('/static/f/UniversalisADFStd-Regular.woff') format('woff'), url('/static/f/UniversalisADFStd-Regular.otf') format('opentype');
+}
+@font-face {
+font-family: 'UniversalisADFStdOblique';
+src: url('/static/f/UniversalisADFStd-Oblique.eot');
+src: local('Universalis ADF Std'), local('UniversalisADFStd-Oblique'), url('/static/f/UniversalisADFStd-Oblique.woff') format('woff'), url('/static/f/UniversalisADFStd-Oblique.otf') format('opentype');
+}
+@font-face {
+font-family: 'UniversalisADFStdBold';
+src: url('/static/f/UniversalisADFStd-Bold.eot');
+src: local('Universalis ADF Std'), local('UniversalisADFStd-Bold'), url('/static/f/UniversalisADFStd-Bold.woff') format('woff'), url('/static/f/UniversalisADFStd-Bold.otf') format('opentype');
+}
+
+body {
+    background-color: black;
+    color: white;
+    font: normal medium UniversalisADFStdRegular;
+    width: 80%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#guess {
+    color: #FEFE3F;
+
+/* --------------------------------------------------------------      Reset default browser CSS.      Based on work by Eric Meyer:   * meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/   -------------------------------------------------------------- */html, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, code,del, dfn, em, img, q, dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td {	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: inherit;	vertical-align: baseline;}body {   line-height: 1.5;   background: #fff;   margin:0; }a img { border: none; }

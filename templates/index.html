@@ -9,12 +9,11 @@ $if question == 'begin':
     </form>
 $elif question:
     <p>$count -- $question.text</p>
-    <form action="/answer/$question.id" method="post">
-        <input type="submit" name="answer" value="yes">
-        <br / >
-        <input type="submit" name="answer" value="unsure">
-        <br />
-        <input type="submit" name="answer" value="no">
+    <form action="/answer/$question.id" method="post" id="answer_form">
+        <input type="button" name="yes" value="yes">
+        <input type="button" name="unsure" value="unsure">
+        <input type="button" name="no" value="no">
+        <input type="hidden" name="answer">
     </form>
 $else:
     <p>I DO NOT KNOW WHAT TO DO HERE. (guess)</p>

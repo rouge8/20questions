@@ -38,7 +38,7 @@ class guess:
         chosen = game.guess()
         return render.guess(chosen)
     def POST(self, chosen_id=None):
-        a = web.input().answer
+        a = web.input().reply
         
         if not(chosen_id):
             chosen_id=1
@@ -93,8 +93,9 @@ class answer:
         
         question_id = int(question_id) # otherwise it's unicode
         a = web.input().answer
+        print 'FORM VALUE IS' ,a
         if a in ['yes','no','unsure']: answer = eval('game.' + a)
-        else: answer = 0
+        else: answer = game.unsure
         count += 1
         game.update_local_knowledgebase(question_id, answer)
         raise web.seeother('/')

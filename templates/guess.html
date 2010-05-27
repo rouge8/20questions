@@ -2,11 +2,11 @@ $def with (chosen)
 
 $if chosen:
     <p>I guess....</p>
-    <h1>$chosen.name</h1>
+    <h1 id="guess">$chosen.name</h1>
     <p>Was I right?</p>
     <form action="/guess/$chosen.id" method="post">
-        <input type="submit" name="answer" value="yes">
-        <input type="submit" name="answer" value="no">
+        <input type="submit" name="reply" value="yes">
+        <input type="submit" name="reply" value="no">
     </form>
     <p>Played $chosen.times_played times.
     $if chosen.times_played >0:

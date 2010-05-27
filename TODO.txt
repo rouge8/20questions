@@ -18,3 +18,6 @@ SEPARATE OUT TERMINAL INTERFACE FROM FUNCTIONS
 
 http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-refresh-using-jquery/
 
+http://trac.edgewall.org/wiki/PySqlite#DetermineactualSQLiteandPySqliteversion
+
+DOES DAN HAVE A BROKEN PYTHON PATH?
