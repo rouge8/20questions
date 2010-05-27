@@ -64,28 +64,31 @@ class learn:
         nearby_objects = game.get_nearby_objects(10)
         return render.learn(nearby_objects)
     def POST(self):
-        name = web.input().name
-        if name == "new":
-            name = web.input().new_character
-        question = web.input().question
-        new_question_answer = web.input().new_question_answer
-        if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
-        else: answer = game.unsure
+        inputs = web.input()
         
-        print "NEW QUETSION ANS", new_question_answer
+        name = inputs.get('name')
+        if name == "new":
+            name = inputs.get('new_character')
+            
+        question = inputs.get('question', '')
+        if question:
+            new_question_answer = inputs.get('new_question_answer')
+            if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
+            else: answer = game.unsure
+        
         if question.strip() != '' and not(model.get_question_by_text(question.strip())):
             # makes sure the question is not already in the database
             new_question_id = model.add_question(question)
         else:
-            new_question_id = model.get_question_by_text(question.strip()).id
-            # if question already in DB, returns id. else returns None
-            
+            new_question = model.get_question_by_text(question.strip())
+            # if question already in DB, returns question. else returns None.
+        if new_question:
+            new_question_id = new_question.id
+        else:
+            new_question_id = None
 
         new_object_id = game.learn_character(name)
         
-        print "OOJB", new_object_id
-        print "QEUS", new_question_id
-        print
         if new_question_id and new_object_id:
             model.update_data(new_object_id, new_question_id, answer)
             
