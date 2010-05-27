@@ -44,6 +44,7 @@ def learn_character(name):
             new_object_id = model.add_object(name) ### adds to database and trains
             learn(new_object_id)
             # maybe scale the numbers so more than 1
+            return new_object_id
         
 def add_question(object):
     question = raw_input("Question: ")

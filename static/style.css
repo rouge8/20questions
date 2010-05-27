@@ -36,7 +36,7 @@ body {
 
 #count {
     color: #FEFE3F;
-    font-size: large;
+    font-size: 40px;
 }
 
 #guess {
@@ -47,6 +47,6 @@ body {
     color: #FEFE3F;
 }
 
-#learn_form {
+h1, h2 {
     color: #FEFE3F;
 }

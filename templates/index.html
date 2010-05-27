@@ -13,7 +13,7 @@ $if question == 'begin':
         <input type="submit" value="Begin!">
     </form>
 $elif question:
-    <p><span id="count">$count</span> -- $question.text</p>
+    <p><span id="count">$count.</span> $question.text</p>
     <form action="/answer/$question.id" method="post" id="answer_form">
         <input type="button" name="yes" value="yes">
         <input type="button" name="unsure" value="unsure">

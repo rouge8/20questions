@@ -38,7 +38,7 @@ class guess:
         chosen = game.guess()
         return render.guess(chosen)
     def POST(self, chosen_id=None):
-        a = web.input().reply
+        a = web.input().answer
         
         if not(chosen_id):
             chosen_id=1
@@ -65,12 +65,22 @@ class learn:
         return render.learn(nearby_objects)
     def POST(self):
         name = web.input().name
+        if name == "new":
+            name = web.input().new_character
         question = web.input().question
+        new_question_answer = web.input().new_question_answer
+        print "NEW QUETSION ANS", new_question_answer
         if question.strip() != '' and not(model.get_question_by_text(question.strip())):
             # makes sure the question is not already in the database
-            question_id = model.add_question(question)
-        
-        game.learn_character(name)
+            new_question_id = model.add_question(question)
+
+        new_object_id = game.learn_character(name)
+        if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
+        else: answer = game.unsure
+        print "OOJB", new_object_id
+        print "QEUS", new_question_id
+        print
+        model.update_data(new_object_id, new_question_id, answer)
             
         game.reset_game()
         # resets game data and starts a new game
