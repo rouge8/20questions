@@ -9,8 +9,6 @@ document!
 
 ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
 
-SOMETIMES ASK A RANDOM QUESTION*******
-
 SEPARATE OUT TERMINAL INTERFACE FROM FUNCTIONS
 
 http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-refresh-using-jquery/

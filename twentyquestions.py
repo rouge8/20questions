@@ -11,6 +11,7 @@
 
 import web
 import config, model
+import random
 
 yes = 1
 no = -1
@@ -160,9 +161,15 @@ def play_game():
         ask_question()
     guess_and_learn()
 
-def load_initial_questions(): ############## CLEAN THIS UP
+def load_initial_questions():
     global initial_questions
     initial_questions.append(model.get_question_by_id(1))
+    questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
+    
+    for i in range(3): # up to 3 initial random questions
+        q = random.choice(questions)
+        if not(q in initial_questions):
+            initial_questions.append(q)
 
 def load_objects_values():
     global objects_values
