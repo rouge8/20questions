@@ -66,10 +66,11 @@ class learn:
     def POST(self):
         name = web.input().name
         question = web.input().question
-        game.learn_character(name)
         if question.strip() != '' and not(model.get_question_by_text(question.strip())):
             # makes sure the question is not already in the database
-            model.add_question(question)
+            question_id = model.add_question(question)
+        
+        game.learn_character(name)
             
         game.reset_game()
         # resets game data and starts a new game

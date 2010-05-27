@@ -2,13 +2,18 @@ $def with (question, count)
 
 
 $if question == 'begin':
+    <header>
+        <hgroup>
+            <h1>Welcome to 20 Questions!</h1>
+        </hgroup>
+    </header>
     <h1>Think of a person (real or fictional)...</h1>
     <br />
     <form action="/begin" method="post">
         <input type="submit" value="Begin!">
     </form>
 $elif question:
-    <p>$count -- $question.text</p>
+    <p><span id="question_number">$count</span> -- $question.text</p>
     <form action="/answer/$question.id" method="post" id="answer_form">
         <input type="button" name="yes" value="yes">
         <input type="button" name="unsure" value="unsure">

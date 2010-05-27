@@ -4,6 +4,8 @@ clean up code (esp. select statements)
 
 BETTER PICKING ALGORITHM FOR ANSWERS
 
+IMPROVE QUESTION CHOOSING
+
 document!
 
 prettify webinterface

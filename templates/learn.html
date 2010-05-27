@@ -2,7 +2,7 @@ $def with(nearby_objects)
 
 <form action="/learn" method="post">
     <fieldset>
-        <legend>Who were you thinking of?</legend>
+        <legend id="learn_form">Who were you thinking of?</legend>
     
     $for object in nearby_objects:
         <p><label><input type="radio" name="name" class="known" value="$object.name">$object.name</label></p>
@@ -10,7 +10,7 @@ $def with(nearby_objects)
     <input type="radio" name="name" id="unknown"><input type="text" name="name" id="new_character" readonly="readonly">
     
     </fieldset>
-    <h2>Suggest a question?</h2>
+    <h2 id="suggest">Suggest a question?</h2>
     <input type="text" name="question">
     <br />
     <input type="submit" value="submit">        
