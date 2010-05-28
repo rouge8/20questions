@@ -67,7 +67,10 @@ def get_nearby_objects(how_many=10): ## need better variable name
     sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
     sorted_objects_values.reverse()  ######### change way it sorts
     
-    nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
+    if sorted_objects_values:
+        nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
+    else:
+        nearby_objects = []
         
     return nearby_objects
     

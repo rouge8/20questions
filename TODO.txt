@@ -18,3 +18,10 @@ http://trac.edgewall.org/wiki/PySqlite#DetermineactualSQLiteandPySqliteversion
 DOES DAN HAVE A BROKEN PYTHON PATH?
 
 FIX UP LEARN PAGE SO ENTIRE BACKGROUND IS BLACK
+
+(11:13:56 AM) Andy: is the first question actually random?
+(11:13:59 AM) Andy: if so that might not be good
+(11:14:02 AM) Andy: I don't think it's supposed to be
+(11:14:33 AM) Andy: oh
+(11:14:47 AM) Andy: it's random if you refresh because it goes through the list of initial questions
+(11:15:00 AM) Andy: that is a bug related to the fact that we probably don't do sessions correctly :P

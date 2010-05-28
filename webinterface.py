@@ -82,12 +82,14 @@ class learn:
         else:
             new_question = model.get_question_by_text(question.strip())
             # if question already in DB, returns question. else returns None.
-        if new_question:
-            new_question_id = new_question.id
-        else:
-            new_question_id = None
-
-        new_object_id = game.learn_character(name)
+            if new_question:
+                new_question_id = new_question.id
+            else:
+                new_question_id = None
+        
+        if name:
+            new_object_id = game.learn_character(name)
+        else: new_object_id = None
         
         if new_question_id and new_object_id:
             model.update_data(new_object_id, new_question_id, answer)
