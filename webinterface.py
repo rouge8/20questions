@@ -6,7 +6,6 @@
 import web
 import config, model
 import twentyquestions as game
-count = 1
 
 urls = (
     '/', 'index',
@@ -17,48 +16,68 @@ urls = (
     '/learn', 'learn'
 )
 
+session_vars = {'count': 1, 'asked_questions': {}, 'initial_questions': [], 'objects_values': {}}
 app = web.application(urls, globals())
+session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=session_vars)
+
 
 render = web.template.render('templates', base='base')
+
+def reset_game():
+    session.kill()
+        
+    #session['asked_questions'] = {}
+    #session['initial_questions'] = []
+    #session['objects_values'] = {}
+    #session['count'] = 1
 
 class index:
     def GET(self):
         # show the index!
-        global count
-                
-        if game.asked_questions == {} and game.initial_questions == []:
+        
+        
+        print session
+        
+        print session.count
+        print session.asked_questions
+        print session.initial_questions
+        
+        if not(session.get('asked_questions')) and not(session.get('initial_questions')):
             question = 'begin'
         else:
-            question = game.choose_question()
-            if question == None or count > 20:
+            question = game.choose_question(session.initial_questions, session.objects_values, session.asked_questions)
+            if question == None or session.count > 20:
                 raise web.seeother('/guess')
-        return render.index(question,count)
+        print question
+        return render.index(question, session.get('count'))
 
 class guess:
     def GET(self, chosen_id=None):
         # guess!
-        chosen = game.guess()
+        chosen = game.guess(session.objects_values)
         return render.guess(chosen)
+        
     def POST(self, chosen_id=None):
         a = web.input().answer
         
         if not(chosen_id):
             chosen_id=1
         if a in ['no', 'teach me']:
-            game.learn(int(chosen_id), False) # learns that the guess was wrong
+            game.learn(session.asked_questions, int(chosen_id), False) # learns that the guess was wrong
             
             raise web.seeother('/learn')
         elif a in ['yes']:
-            game.learn(int(chosen_id))
+            game.learn(session.asked_questions, int(chosen_id))
             
-            game.reset_game()
+            reset_game()
             
             raise web.seeother('/')
             
 class learn:
     def GET(self):
-        nearby_objects = game.get_nearby_objects(20)
+        nearby_objects = game.get_nearby_objects(session.objects_values, 20)
         return render.learn(nearby_objects)
+        
     def POST(self):
         inputs = web.input()
         
@@ -84,39 +103,41 @@ class learn:
                 new_question_id = None
         
         if name:
-            new_object_id = game.learn_character(name)
+            new_object_id = game.learn_character(session.asked_questions, name)
         else: new_object_id = None
         
         if new_question_id and new_object_id:
             model.update_data(new_object_id, new_question_id, answer)
             
-        game.reset_game()
+        reset_game()
         # resets game data and starts a new game
                 
         raise web.seeother('/')
 
 class begin:
-    def POST(self):
-        global count
-        count = 1
-        game.reset_game()
+    def POST(self):        
+        #reset_game()
         
-        game.load_initial_questions()
-        game.load_objects_values()
+        session.initial_questions = game.load_initial_questions()
+        session.objects_values = game.load_objects_values()
+        
+        #print session.initial_questions
+        #print session.objects_values
                 
         raise web.seeother('/')
 
 class answer:
     def POST(self, question_id):
-        global count
         
         question_id = int(question_id) # otherwise it's unicode
         a = web.input().answer
         if a in ['yes','no','unsure']: answer = eval('game.' + a)
         else: answer = game.unsure
-        count += 1
-        game.update_local_knowledgebase(question_id, answer)
+        session.count += 1
+        game.update_local_knowledgebase(session.objects_values, session.asked_questions, question_id, answer)
         raise web.seeother('/')
+
+
 
 if __name__ == '__main__':
     if web.config.debug:

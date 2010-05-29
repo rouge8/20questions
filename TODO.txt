@@ -27,7 +27,5 @@ FIX UP LEARN PAGE SO ENTIRE BACKGROUND IS BLACK
 have higher weights, especially for new questions
 change guess to look at the character with the most right? (that might already be what it does. WHO KNOWS?)
 
-DO SESSIONS CORRECTLY 
-
 
 display candidates option on ask pages.

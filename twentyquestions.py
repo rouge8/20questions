@@ -4,11 +4,6 @@
 #       twentyquestions.py
 
 
-###################### COME UP WITH BETTER VARIABLE NAMES
-###################### db.select returns list
-############################## USE db.select(what=)!!!!!!!!
-
-
 import web
 import config, model
 import random
@@ -16,12 +11,9 @@ import random
 yes = 1
 no = -1
 unsure = 0
-objects_values = {}
-asked_questions = {}
-initial_questions = []
 
 
-def guess():
+def guess(objects_values):
     # return thing with highest weight from dictionary or top of heap
     if objects_values == {}: # nothing in the database :(
         return None
@@ -36,19 +28,19 @@ def guess():
         
         return chosen
             
-def learn_character(name):
+def learn_character(asked_questions, name):
     if name.strip() != '':
         object = model.get_object_by_name(name)
         if object: # character in database
-            learn(object.id)
+            learn(asked_questions, object.id)
             return object.id
         else:
             new_object_id = model.add_object(name) ### adds to database and trains
-            learn(new_object_id)
+            learn(asked_questions, new_object_id)
             # maybe scale the numbers so more than 1
             return new_object_id
         
-def learn(object_id, right=True):
+def learn(asked_questions, object_id, right=True):
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
         if not(current_weight):
@@ -63,7 +55,7 @@ def learn(object_id, right=True):
     if config.RECORD_USER:
         model.record_playlog(object_id, asked_questions, right)
 
-def get_nearby_objects(how_many=10): ## need better variable name
+def get_nearby_objects(objects_values, how_many=10): ## need better variable name
     sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
     sorted_objects_values.reverse()  ######### change way it sorts
     
@@ -75,7 +67,7 @@ def get_nearby_objects(how_many=10): ## need better variable name
     return nearby_objects
     
 
-def choose_question(how_many=5):    
+def choose_question(initial_questions, objects_values, asked_questions, how_many=5):    
     
     if initial_questions:
         question = initial_questions.pop(0)
@@ -109,7 +101,7 @@ def choose_question(how_many=5):
     
     return question
 
-def update_local_knowledgebase(question_id, answer):
+def update_local_knowledgebase(objects_values, asked_questions, question_id, answer):
     if not(answer in [yes, no, unsure]):
         raise Exception('Invalid Answer')
     else:
@@ -127,7 +119,7 @@ def update_local_knowledgebase(question_id, answer):
         asked_questions[question_id] = answer
 
 def load_initial_questions():
-    global initial_questions
+    initial_questions = []
     initial_questions.append(model.get_question_by_id(1))
     questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
     
@@ -135,15 +127,16 @@ def load_initial_questions():
         q = random.choice(questions)
         if not(q in initial_questions):
             initial_questions.append(q)
+    
+    return initial_questions
 
 def load_objects_values():
-    global objects_values
+    objects_values = {}
     objects = model.get_objects()
     for object in objects:
-        print object
         objects_values[object.id] = 0
     
-    print objects_values
+    return objects_values
 
 def reset_game():
     global asked_questions
