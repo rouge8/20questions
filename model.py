@@ -103,5 +103,4 @@ def num_objects():
     return db.query('select COUNT(*) from objects;')
 
 def record_playlog(object_id, asked_questions, right):
-    print locals()
     db.insert('playlog', object_id=object_id, data=str(asked_questions), right=right)

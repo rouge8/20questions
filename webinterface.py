@@ -36,11 +36,11 @@ class index:
         # show the index!
         
         
-        print session
+        #print session
         
-        print session.count
-        print session.asked_questions
-        print session.initial_questions
+        #print session.count
+        #print session.asked_questions
+        #print session.initial_questions
         
         if not(session.get('asked_questions')) and not(session.get('initial_questions')):
             question = 'begin'
@@ -48,7 +48,7 @@ class index:
             question = game.choose_question(session.initial_questions, session.objects_values, session.asked_questions)
             if question == None or session.count > 20:
                 raise web.seeother('/guess')
-        print question
+        #print question
         return render.index(question, session.get('count'))
 
 class guess:
