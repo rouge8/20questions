@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       whatnxt.py
+#       webinterface.py
 
 import web
 import config, model
@@ -16,6 +16,8 @@ urls = (
     '/guess/(\d+)', 'guess',
     '/learn', 'learn'
 )
+
+app = web.application(urls, globals())
 
 render = web.template.render('templates', base='base')
 
@@ -42,8 +44,6 @@ class guess:
         
         if not(chosen_id):
             chosen_id=1
-            print 'CHOOSING NONE!!!!!!!'
-            print 'asked questions: ', game.asked_questions
         if a in ['no', 'teach me']:
             game.learn(int(chosen_id), False) # learns that the guess was wrong
             
@@ -53,15 +53,11 @@ class guess:
             
             game.reset_game()
             
-            #print 'ASKED QUESTION:', game.asked_questions
-            #print 'INITIAL QUESTION:', game.initial_questions
-            #print 'OBJECTS VALUES:', game.objects_values
-            
             raise web.seeother('/')
             
 class learn:
     def GET(self):
-        nearby_objects = game.get_nearby_objects(10)
+        nearby_objects = game.get_nearby_objects(20)
         return render.learn(nearby_objects)
     def POST(self):
         inputs = web.input()
@@ -116,7 +112,6 @@ class answer:
         
         question_id = int(question_id) # otherwise it's unicode
         a = web.input().answer
-        print 'FORM VALUE IS' ,a
         if a in ['yes','no','unsure']: answer = eval('game.' + a)
         else: answer = game.unsure
         count += 1
@@ -124,7 +119,6 @@ class answer:
         raise web.seeother('/')
 
 if __name__ == '__main__':
-    app = web.application(urls, globals())
     if web.config.debug:
         app.internalerror = web.debugerror
     app.run()

@@ -9,8 +9,6 @@ document!
 
 ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
 
-SEPARATE OUT TERMINAL INTERFACE FROM FUNCTIONS
-
 http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-refresh-using-jquery/
 
 http://trac.edgewall.org/wiki/PySqlite#DetermineactualSQLiteandPySqliteversion
@@ -25,3 +23,11 @@ FIX UP LEARN PAGE SO ENTIRE BACKGROUND IS BLACK
 (11:14:33 AM) Andy: oh
 (11:14:47 AM) Andy: it's random if you refresh because it goes through the list of initial questions
 (11:15:00 AM) Andy: that is a bug related to the fact that we probably don't do sessions correctly :P
+
+have higher weights, especially for new questions
+change guess to look at the character with the most right? (that might already be what it does. WHO KNOWS?)
+
+DO SESSIONS CORRECTLY 
+
+
+display candidates option on ask pages.

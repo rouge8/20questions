@@ -74,7 +74,6 @@ def get_nearby_objects(how_many=10): ## need better variable name
         
     return nearby_objects
     
-    
 
 def choose_question(how_many=5):    
     
@@ -98,9 +97,10 @@ def choose_question(how_many=5):
             if not(question.id in asked_questions): # if we have not already asked it, condider it
                 question_entropy = 0
                 for object in most_likely_objects:
-                    if model.get_value(object[1], question.id) > 0: # do we add values or should we count yeses and no's
+                    value = model.get_value(object[1], question.id)
+                    if value > 0: # do we add values or should we count yeses and no's
                         question_entropy += 1
-                    else:
+                    elif value < 0:
                         question_entropy -= 1
                 if abs(question_entropy) <= best_question_entropy:
                     best_question_entropy = abs(question_entropy)
@@ -125,44 +125,6 @@ def update_local_knowledgebase(question_id, answer):
                    in objects_values, but that is probably slower.'''
                 objects_values[weight.object_id] += answer*weight.value
         asked_questions[question_id] = answer
-
-def ask_question():    
-    question = choose_question()
-    
-    if question == None:
-        guess_and_learn()
-        return
-    
-    answer=raw_input(question.text + ' ')
-    
-    if answer == 'y':
-        answer = yes # need better name
-    elif answer == 'n':
-        answer = no
-    else:
-        answer = unsure
-    
-    update_local_knowledgebase(question.id, answer)
-    
-def guess_and_learn():
-    chosen = guess()
-    if chosen == None:
-        print 'Oh snaps, I\'ve got nothing.' ############ THIS SECTION NEEDS TO BE REWORKED
-    else:
-        print "I choose: %s" %(chosen.name)
-    right = raw_input('Is this correct?')
-    if right == 'n':
-        name = raw_input("Won't you please tell me who you were thinking of?  ")
-        learn_character(name)
-    elif right == 'y':
-        learn(chosen.id)
-
-def play_game():
-    load_objects_values()
-    load_initial_questions()
-    for i in range(10):
-        ask_question()
-    guess_and_learn()
 
 def load_initial_questions():
     global initial_questions
@@ -192,5 +154,3 @@ def reset_game():
     initial_questions = []
     objects_values = {}
 
-if __name__ == '__main__':
-    play_game()
