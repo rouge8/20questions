@@ -1,0 +1,9 @@
+$def with (objects)
+
+$if objects:
+    <form name="delete_objects" action="/admin/dq" method="post">
+    $for object in objects:
+        <input type="checkbox" name="$object.id"> $object.name
+        <br />
+    <input type="submit" value="Submit">
+    </form

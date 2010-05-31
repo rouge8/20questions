@@ -6,6 +6,7 @@
 import web
 import config, model
 import twentyquestions as game
+import admin
 
 urls = (
     '/', 'index',
@@ -13,7 +14,8 @@ urls = (
     '/answer/(\d+)', 'answer',
     '/guess', 'guess',
     '/guess/(\d+)', 'guess',
-    '/learn', 'learn'
+    '/learn', 'learn',
+    '/admin', admin.app
 )
 
 session_vars = {'count': 1, 'asked_questions': {}, 'initial_questions': [], 'objects_values': {}}

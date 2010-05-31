@@ -104,3 +104,11 @@ def num_objects():
 
 def record_playlog(object_id, asked_questions, right):
     db.insert('playlog', object_id=object_id, data=str(asked_questions), right=right)
+
+def delete_question(question_id):
+    db.delete('questions', where='id=$question_id', vars=locals())
+    db.delete('data', where='question_id=$question_id', vars=locals())
+    
+def delete_object(object_id):
+    db.delete('objects', where='id=$object_id', vars=locals())
+    db.delete('data', where='object_id=$object_id', vars=locals())
