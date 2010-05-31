@@ -34,21 +34,13 @@ def reset_game():
 class index:
     def GET(self):
         # show the index!
-        
-        
-        #print session
-        
-        #print session.count
-        #print session.asked_questions
-        #print session.initial_questions
-        
+                
         if not(session.get('asked_questions')) and not(session.get('initial_questions')):
             question = 'begin'
         else:
             question = game.choose_question(session.initial_questions, session.objects_values, session.asked_questions)
             if question == None or session.count > 20:
                 raise web.seeother('/guess')
-        #print question
         return render.index(question, session.get('count'))
 
 class guess:
@@ -115,15 +107,11 @@ class learn:
         raise web.seeother('/')
 
 class begin:
-    def POST(self):        
-        #reset_game()
-        
+    def POST(self):
+                
         session.initial_questions = game.load_initial_questions()
         session.objects_values = game.load_objects_values()
-        
-        #print session.initial_questions
-        #print session.objects_values
-                
+                        
         raise web.seeother('/')
 
 class answer:

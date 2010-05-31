@@ -90,10 +90,12 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
                 question_entropy = 0
                 for object in most_likely_objects:
                     value = model.get_value(object[1], question.id)
-                    if value > 0: # do we add values or should we count yeses and no's
+                    if value > 0:
                         question_entropy += 1
                     elif value < 0:
                         question_entropy -= 1
+                    else: # value = 0
+                        question_entropy += 20 # arbitrary weight to discourage questions with lots of unknowns
                 if abs(question_entropy) <= best_question_entropy:
                     best_question_entropy = abs(question_entropy)
                     best_question = question
