@@ -15,6 +15,7 @@ urls = (
     '/guess', 'guess',
     '/guess/(\d+)', 'guess',
     '/learn', 'learn',
+    '/restart', 'restart',
     '/admin', admin.app
 )
 
@@ -27,11 +28,7 @@ render = web.template.render('templates', base='base')
 
 def reset_game():
     session.kill()
-        
-    #session['asked_questions'] = {}
-    #session['initial_questions'] = []
-    #session['objects_values'] = {}
-    #session['count'] = 1
+    
 
 class index:
     def GET(self):
@@ -44,6 +41,11 @@ class index:
             if question == None or session.count > 20:
                 raise web.seeother('/guess')
         return render.index(question, session.get('count'))
+
+class restart:
+    def POST(self):
+        reset_game()
+        raise web.seeother('/')
 
 class guess:
     def GET(self, chosen_id=None):
