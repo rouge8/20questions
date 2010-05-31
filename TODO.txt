@@ -11,12 +11,6 @@ ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
 
 http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-refresh-using-jquery/
 
-http://trac.edgewall.org/wiki/PySqlite#DetermineactualSQLiteandPySqliteversion
-
-DOES DAN HAVE A BROKEN PYTHON PATH?
-
-FIX UP LEARN PAGE SO ENTIRE BACKGROUND IS BLACK
-
 (11:13:56 AM) Andy: is the first question actually random?
 (11:13:59 AM) Andy: if so that might not be good
 (11:14:02 AM) Andy: I don't think it's supposed to be
@@ -29,3 +23,5 @@ change guess to look at the character with the most right? (that might already b
 
 
 display candidates option on ask pages.
+
+BUILD QUESTION MANAGER

@@ -123,7 +123,7 @@ def load_initial_questions():
     initial_questions.append(model.get_question_by_id(1))
     questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
     
-    for i in range(3): # up to 3 initial random questions
+    for i in range(2): # up to 2 initial random questions
         q = random.choice(questions)
         if not(q in initial_questions):
             initial_questions.append(q)
