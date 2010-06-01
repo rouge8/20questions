@@ -84,7 +84,9 @@ class learn:
         question = inputs.get('question', '')
         if question:
             new_question_answer = inputs.get('new_question_answer')
-            if new_question_answer in ['yes','no','unsure']: answer = eval('game.' + new_question_answer)
+            if new_question_answer in ['yes','no','unsure']:
+                answer = eval('game.' + new_question_answer) * 5
+                # strongly weights new answer
             else: answer = game.unsure
         
         if question.strip() != '' and not(model.get_question_by_text(question.strip())):
@@ -100,7 +102,8 @@ class learn:
         
         if name:
             new_object_id = game.learn_character(session.asked_questions, name)
-        else: new_object_id = None
+        else:
+            new_object_id = None
         
         if new_question_id and new_object_id:
             model.update_data(new_object_id, new_question_id, answer)

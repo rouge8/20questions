@@ -28,7 +28,7 @@ class delete_question:
         question_ids = web.input()
         for id in question_ids:
             model.delete_question(id)
-        raise web.seeother('')
+        raise web.seeother('/')
 
 class delete_object:
     def GET(self):
@@ -38,5 +38,5 @@ class delete_object:
         object_ids = web.input()
         for id in object_ids:
             model.delete_object(id)
-        raise web.seeother('')
+        raise web.seeother('/')
         
