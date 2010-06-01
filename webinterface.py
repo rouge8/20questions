@@ -133,7 +133,8 @@ class answer:
         a = web.input().answer
         if a in ['yes','no','unsure']: answer = eval('game.' + a)
         else: answer = game.unsure
-        session.count += 1
+        if answer != game.unsure:
+            session.count += 1
         game.update_local_knowledgebase(session.objects_values, session.asked_questions, question_id, answer)
         raise web.seeother('/')
 
