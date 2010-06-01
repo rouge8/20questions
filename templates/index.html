@@ -1,4 +1,4 @@
-$def with (question, count)
+$def with (question, count, nearby_objects)
 
 
 $if question == 'begin':
@@ -26,3 +26,8 @@ $elif question:
     </form>
 $else:
     <p>I DO NOT KNOW WHAT TO DO HERE. (guess)</p>
+
+$if nearby_objects:
+    <h2>Considering...</h2>
+    $for object in nearby_objects:
+        <p>$object.name</p>

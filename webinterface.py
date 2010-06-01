@@ -33,14 +33,19 @@ def reset_game():
 class index:
     def GET(self):
         # show the index!
-                
+        
+        if config.DEBUG_MODE: # clean up this section somehow
+            nearby_objects = game.get_nearby_objects(session.objects_values, how_many=5)
+        else:
+            nearby_objects = None
+        
         if not(session.get('asked_questions')) and not(session.get('initial_questions')):
             question = 'begin'
         else:
             question = game.choose_question(session.initial_questions, session.objects_values, session.asked_questions)
             if question == None or session.count > 20:
                 raise web.seeother('/guess')
-        return render.index(question, session.get('count'))
+        return render.index(question, session.get('count'), nearby_objects)
 
 class restart:
     def POST(self):
