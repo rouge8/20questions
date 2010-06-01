@@ -11,6 +11,7 @@ import random
 yes = 1
 no = -1
 unsure = 0
+WEIGHT_CUTOFF = 10
 
 
 def guess(objects_values):
@@ -117,7 +118,13 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                    get a keyerror when trying to update the weight of that object.
                    This could also be fixed by only retreiving weights for objects
                    in objects_values, but that is probably slower.'''
-                objects_values[weight.object_id] += answer*weight.value
+                if weight.value > WEIGHT_CUTOFF:
+                    value = WEIGHT_CUTOFF
+                elif weight.value < unsure:
+                    value = weight.value / 2 # decrease the weights of 'no' answers
+                else:
+                    value = weight.value
+                objects_values[weight.object_id] += answer*value
         asked_questions[question_id] = answer
 
 def load_initial_questions():

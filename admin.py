@@ -13,7 +13,8 @@ urls = (
     '/dq', 'delete_question',
     '/do', 'delete_object',
     '/data', 'display_data',
-    '/data/(\d+)', 'display_data'
+    '/data/(\d+)', 'display_data',
+    '/retrain', 'retrain'
 )
 
 render = web.template.render('templates', base='base')
