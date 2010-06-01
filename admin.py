@@ -9,6 +9,7 @@ import twentyquestions as game
 
 urls = (
     '', 'admin',
+    '/', 'admin',
     '/dq', 'delete_question',
     '/do', 'delete_object'
 )

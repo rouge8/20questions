@@ -35,7 +35,7 @@ class index:
         # show the index!
         
         if config.DEBUG_MODE: # clean up this section somehow
-            nearby_objects = game.get_nearby_objects(session.objects_values, how_many=5)
+            nearby_objects = game.get_nearby_objects(session.objects_values, how_many=10)
         else:
             nearby_objects = None
         
