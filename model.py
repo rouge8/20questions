@@ -44,6 +44,13 @@ def get_value(object_id, question_id):
     except IndexError:
         return None
 
+def get_values(object_tuple, question_id):
+    where = 'object_id in %s AND question_id=%d' %(object_tuple, question_id)
+    try:
+        return db.select('data', vars=locals(), where=where)
+    except IndexError:
+        return []
+
 def get_objects():
     return db.select('objects')
     
