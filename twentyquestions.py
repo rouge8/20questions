@@ -99,10 +99,11 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
                     elif value < 0:
                         question_entropy -= 1
                     else: # value = 0
-                        question_entropy += 20 # arbitrary weight to discourage questions with lots of unknowns
+                        question_entropy += 5 # arbitrary weight to discourage questions with lots of unknowns
                 if abs(question_entropy) <= best_question_entropy:
                     best_question_entropy = abs(question_entropy)
                     best_question = question
+                    print abs(best_question_entropy), question.text
         question = best_question
     return question
 
