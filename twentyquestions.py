@@ -71,7 +71,7 @@ def get_nearby_objects(objects_values, how_many=10): ## need better variable nam
     return nearby_objects
     
 
-def choose_question(initial_questions, objects_values, asked_questions, how_many=5):
+def choose_question(initial_questions, objects_values, asked_questions, how_many=20):
     
     if initial_questions:
         question = initial_questions.pop(0)
