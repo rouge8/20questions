@@ -3,7 +3,7 @@ $def with (questions)
 $if questions:
     <form name="delete_questions" action="/admin/dq" method="post">
     $for question in questions:
-        <input type="checkbox" name="$question.id"> $question.text
+        <input type="checkbox" name="$question.id"> $question.id -- $question.text
         <br />
     <input type="submit" value="Submit">
     </form
