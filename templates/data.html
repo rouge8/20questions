@@ -1,0 +1,6 @@
+$def with (objects)
+<div id="display_data">
+$for object in objects:
+        RETRAIN <a href="/admin/retrain/$object.id">$object.name</a>
+        <br />
+</div>

@@ -12,9 +12,8 @@ urls = (
     '/', 'admin',
     '/dq', 'delete_question',
     '/do', 'delete_object',
-    '/data', 'display_data',
-    '/data/(\d+)', 'display_data',
-    '/retrain', 'retrain'
+    '/data', 'data',
+    '/retrain/(\d+)', 'retrain'
 )
 
 render = web.template.render('templates', base='base')
@@ -44,19 +43,28 @@ class delete_object:
             model.delete_object(id)
         raise web.seeother('/')
         
-class display_data:
+class data:
     def GET(self):
         objects = model.get_objects()
+        
+        return render.data(list(objects))
+
+class retrain:
+    def GET(self, object_id):
+        object = model.get_object_by_id(object_id)
         questions = model.get_questions()
-        d = model.get_data()
-        data = {}
-        
-        for row in d:
-            data[(row.object_id, row.question_id)] = row.value
-        
+        data = model.get_data_dictionary()
+        if object:
+            return render.retrain(object, list(questions), data)
+        else:
+            raise web.seeother('/') # returns to admin page
             
-        return render.display_data(list(objects), list(questions), data)
-    
-    def POST(self):
-        pass
+    def POST(self, object_id):
+        inputs = web.input()
+        for question_id in inputs:
+            answer = inputs[question_id]
+            if answer in ['yes','no','unsure']:
+                value = eval('game.' + answer) * 10 # STRONGLY weights values learned this way
+                model.update_data(object_id, question_id, value)
         
+        raise web.seeother('/data')

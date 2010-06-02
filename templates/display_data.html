@@ -1,5 +1,0 @@
-$def with (objects, questions, data)
-
-$for object in objects:
-    $for question in questions:
-        <p>$object.name, $question.text : $data[(object.id, question.id)]</p>

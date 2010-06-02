@@ -112,3 +112,12 @@ def delete_question(question_id):
 def delete_object(object_id):
     db.delete('objects', where='id=$object_id', vars=locals())
     db.delete('data', where='object_id=$object_id', vars=locals())
+
+def get_data_dictionary():
+    d = get_data()
+    data = {}
+    
+    for row in d:
+        data[(row.object_id, row.question_id)] = row.value
+    
+    return data

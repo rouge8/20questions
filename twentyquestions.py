@@ -56,6 +56,9 @@ def learn(asked_questions, object_id, right=True):
     if config.RECORD_USER:
         model.record_playlog(object_id, asked_questions, right)
 
+def sort_objects_values(objects_values):
+    pass
+
 def get_nearby_objects(objects_values, how_many=10): ## need better variable name
     sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
     sorted_objects_values.reverse()  ######### change way it sorts
@@ -68,7 +71,7 @@ def get_nearby_objects(objects_values, how_many=10): ## need better variable nam
     return nearby_objects
     
 
-def choose_question(initial_questions, objects_values, asked_questions, how_many=5):    
+def choose_question(initial_questions, objects_values, asked_questions, how_many=5):
     
     if initial_questions:
         question = initial_questions.pop(0)
@@ -101,7 +104,6 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
                     best_question_entropy = abs(question_entropy)
                     best_question = question
         question = best_question
-    
     return question
 
 def update_local_knowledgebase(objects_values, asked_questions, question_id, answer):
@@ -156,3 +158,6 @@ def reset_game():
     initial_questions = []
     objects_values = {}
 
+
+if __name__ == '__main__':
+    pass

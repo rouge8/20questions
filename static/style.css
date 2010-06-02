@@ -39,14 +39,12 @@ body {
     font-size: 40px;
 }
 
-#guess {
+#guess, #suggest, h1, h2, a, .value {
     color: #FEFE3F;
 }
 
-#suggest {
-    color: #FEFE3F;
-}
-
-h1, h2, a {
-    color: #FEFE3F;
+#retrain, #display_data {
+    text-align: left;
+    float: left;
+    width: 85%;
 }
