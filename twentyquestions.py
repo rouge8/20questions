@@ -6,7 +6,7 @@
 
 import web
 import config, model
-import random
+import random, math
 
 yes = 1
 no = -1
@@ -71,6 +71,44 @@ def get_nearby_objects(objects_values, how_many=10): ## need better variable nam
     return nearby_objects
     
 
+def entropy(objects, question):
+    objects = tuple(objects) # necessary for SQL IN statement to work
+    positives = model.get_num_positives(objects, question.id) *1.0
+    negatives = model.get_num_negatives(objects, question.id) *1.0
+    unknowns = model.get_num_unknowns(objects, question.id) *1.0
+    total = positives + negatives# + unknowns
+    
+    if positives != 0:
+        frac_positives = (-1*positives)/total * math.log(positives/total, 2)
+    else:
+        frac_positives = 0
+    if negatives != 0:
+        frac_negatives = (-1*negatives)/total * math.log(negatives/total, 2)
+    else:
+        frac_negatives = 0
+    if unknowns != 0:
+        frac_unknowns = (-1*unknowns)/total * math.log(unknowns/total, 2)
+    else:
+        frac_unknowns = 0
+    
+    entropy = frac_positives + frac_negatives# + frac_unknowns
+    #entropy = entropy / total
+    #entropy = entropy / len(objects) # average
+    
+    return entropy
+
+def dan_entropy(objects,question):
+    question_entropy = 0
+    for object in objects:
+        value = model.get_value(object, question.id)
+        if value > 0:
+            question_entropy += 1
+        elif value < 0:
+            question_entropy -= 1
+        else: # value = 0
+            question_entropy += 5 # arbitrary weight to discourage questions with lots of unknowns
+    return question_entropy
+                        
 def choose_question(initial_questions, objects_values, asked_questions, how_many=20):
     
     if initial_questions:
@@ -85,21 +123,17 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
         sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]
         
+        OBJECTS_TO_ENTROPY = [object[1] for object in most_likely_objects]
+        
         questions = model.get_questions()
         best_question_entropy = abs(float('inf'))
         best_question = None
         
         for question in questions: # loop through all the questions
             if not(question.id in asked_questions): # if we have not already asked it, condider it
-                question_entropy = 0
-                for object in most_likely_objects:
-                    value = model.get_value(object[1], question.id)
-                    if value > 0:
-                        question_entropy += 1
-                    elif value < 0:
-                        question_entropy -= 1
-                    else: # value = 0
-                        question_entropy += 5 # arbitrary weight to discourage questions with lots of unknowns
+                print question.text, 'ENTROPY:', entropy(OBJECTS_TO_ENTROPY, question)
+                print question.text, 'DAN:', dan_entropy(OBJECTS_TO_ENTROPY, question)
+                question_entropy = dan_entropy(most_likely_objects, question)
                 if abs(question_entropy) <= best_question_entropy:
                     best_question_entropy = abs(question_entropy)
                     best_question = question
@@ -161,4 +195,11 @@ def reset_game():
 
 
 if __name__ == '__main__':
-    pass
+    objects = model.get_objects()
+    objects = list(objects)
+    objects = tuple(objects)
+    questions = model.get_questions()
+    
+    for question in questions:
+        print 'DAN:', dan_entropy(objects, question)
+        print 'ANDY:', entropy(objects, question)
