@@ -42,3 +42,5 @@ begin
 update objects set last_played = datetime('now')
 where rowid = old.rowid;
 end;
+
+CREATE INDEX data_idx ON data(question_id,object_id);
