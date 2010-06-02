@@ -100,15 +100,17 @@ def entropy(objects, question):
     return entropy
 
 def dan_entropy(objects,question):
+    objects = tuple(objects) # necessary for SQL IN statement to work
+    positives = model.get_num_positives(objects, question.id)
+    negatives = model.get_num_negatives(objects, question.id)
+    unknowns = model.get_num_unknowns(objects, question.id)
+    
     question_entropy = 0
-    for object in objects:
-        value = model.get_value(object, question.id)
-        if value > 0:
-            question_entropy += 1
-        elif value < 0:
-            question_entropy -= 1
-        else: # value = 0
-            question_entropy += 5 # arbitrary weight to discourage questions with lots of unknowns
+    
+    question_entropy += positives * 1
+    question_entropy -= negatives * 1
+    question_entropy += unknowns * 5 # arbitrary weight to discourage questions with lots of unknowns
+    
     return question_entropy
                         
 def choose_question(initial_questions, objects_values, asked_questions, how_many=20):
