@@ -92,8 +92,8 @@ def entropy(objects, question):
         frac_unknowns = 0
     
     entropy = frac_positives + frac_negatives + frac_unknowns
-    entropy = entropy * total # weights values
-    entropy = entropy / len(objects) # average
+    #entropy = entropy * total # weights values
+    #entropy = entropy / len(objects) # average
     if entropy != 0: entropy = 1/entropy #minimizes rather than maximizes
     else: entropy = float('inf')
     

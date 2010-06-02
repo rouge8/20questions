@@ -1,10 +1,6 @@
 adjust weights
 clean up code (esp. select statements)
 
-BETTER PICKING ALGORITHM FOR ANSWERS
-
-IMPROVE QUESTION CHOOSING
-
 document!
 
 ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
@@ -23,11 +19,6 @@ ADMIN PAGE LOGINS
     http://dloewenherz.blogspot.com/2010/01/openid-clickpass-webpy-and-python.html
     or do this the crappy way ourselves. or just don't worry for the project.
 
-http://www.sqlite.org/lang_createindex.html
-
-MAKE DISPLAY DATA LOTS BETTER
-
-IMPLEMENT VALUE CUTOFFS WHEN OBJECTS_VALUES IS CREATED OR SOMETHING LIKE THAT.
-    THIS WAY THE DATABASE DOESN'T ACTUALLY HAVE TO BE CHANGED
-
 guess once value is over 100?
+
+LOOK AT UPDATE_LOCAL_KNOWLEDGEBASE
