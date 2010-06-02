@@ -45,7 +45,7 @@ def get_value(object_id, question_id):
         return None
 
 def get_num_unknowns(object_tuple, question_id):
-    where = 'object_id in %s AND question_id=%d AND value =1' %(object_tuple, question_id)
+    where = 'object_id in %s AND question_id=%d AND value =0' %(object_tuple, question_id)
     try:
         rows = db.select('data', vars=locals(), where=where)
         return len(list(rows))
@@ -53,7 +53,7 @@ def get_num_unknowns(object_tuple, question_id):
         return 0
 
 def get_num_positives(object_tuple, question_id):
-    where = 'object_id IN %s AND question_id=%d AND value >1' %(object_tuple, question_id)
+    where = 'object_id IN %s AND question_id=%d AND value >0' %(object_tuple, question_id)
     try:
         rows = db.select('data', vars=locals(), where=where)
         return len(list(rows))
@@ -61,7 +61,7 @@ def get_num_positives(object_tuple, question_id):
         return 0
 
 def get_num_negatives(object_tuple, question_id):
-    where = 'object_id in %s AND question_id=%d AND value <1' %(object_tuple, question_id)
+    where = 'object_id in %s AND question_id=%d AND value <0' %(object_tuple, question_id)
     try:
         rows = db.select('data', vars=locals(), where=where)
         return len(list(rows))

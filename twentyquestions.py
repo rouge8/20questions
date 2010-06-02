@@ -196,10 +196,11 @@ def reset_game():
 
 if __name__ == '__main__':
     objects = model.get_objects()
-    objects = list(objects)
+    objects = [object.id for object in objects]
     objects = tuple(objects)
     questions = model.get_questions()
     
     for question in questions:
+        print question.id
         print 'DAN:', dan_entropy(objects, question)
         print 'ANDY:', entropy(objects, question)
