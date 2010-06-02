@@ -76,7 +76,7 @@ def entropy(objects, question):
     positives = model.get_num_positives(objects, question.id) *1.0
     negatives = model.get_num_negatives(objects, question.id) *1.0
     unknowns = model.get_num_unknowns(objects, question.id) *1.0
-    total = positives + negatives# + unknowns
+    total = positives + negatives + unknowns
     
     if positives != 0:
         frac_positives = (-1*positives)/total * math.log(positives/total, 2)
@@ -91,9 +91,11 @@ def entropy(objects, question):
     else:
         frac_unknowns = 0
     
-    entropy = frac_positives + frac_negatives# + frac_unknowns
-    #entropy = entropy / total
-    #entropy = entropy / len(objects) # average
+    entropy = frac_positives + frac_negatives + frac_unknowns
+    entropy = entropy * total # weights values
+    entropy = entropy / len(objects) # average
+    if entropy != 0: entropy = 1/entropy #minimizes rather than maximizes
+    else: entropy = float('inf')
     
     return entropy
 
@@ -131,9 +133,10 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
         
         for question in questions: # loop through all the questions
             if not(question.id in asked_questions): # if we have not already asked it, condider it
-                print question.text, 'ENTROPY:', entropy(OBJECTS_TO_ENTROPY, question)
-                print question.text, 'DAN:', dan_entropy(OBJECTS_TO_ENTROPY, question)
-                question_entropy = dan_entropy(most_likely_objects, question)
+                
+                question_entropy = entropy(OBJECTS_TO_ENTROPY, question)
+                #question_entropy = dan_entropy(OBJECTS_TO_ENTROPY, question)
+                
                 if abs(question_entropy) <= best_question_entropy:
                     best_question_entropy = abs(question_entropy)
                     best_question = question
@@ -195,6 +198,7 @@ def reset_game():
 
 
 if __name__ == '__main__':
+    ##### Tests entropy! #####
     objects = model.get_objects()
     objects = [object.id for object in objects]
     objects = tuple(objects)
