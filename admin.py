@@ -64,7 +64,7 @@ class retrain:
         for question_id in inputs:
             answer = inputs[question_id]
             if answer in ['yes','no','unsure']:
-                value = eval('game.' + answer) * 10 # STRONGLY weights values learned this way
+                value = eval('game.' + answer) * game.RETRAIN_SCALE # STRONGLY weights values learned this way
                 model.update_data(object_id, question_id, value)
         
         raise web.seeother('/data')

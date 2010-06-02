@@ -11,7 +11,9 @@ import random
 yes = 1
 no = -1
 unsure = 0
-WEIGHT_CUTOFF = 10
+WEIGHT_CUTOFF = 15
+RETRAIN_SCALE = 2
+NEW_QUESTION_SCALE = 5
 
 
 def guess(objects_values):
@@ -41,20 +43,18 @@ def learn_character(asked_questions, name):
             # maybe scale the numbers so more than 1
             return new_object_id
         
-def learn(asked_questions, object_id, right=True):
+def learn(asked_questions, object_id):
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
-        if not(current_weight):
-            current_weight = 0
-        if right:
-            new_weight = current_weight + asked_questions[question]
-        else:
-            new_weight = current_weight - asked_questions[question] ######## SCALE?
+        if not(current_weight): current_weight = 0
+        
+        new_weight = current_weight + asked_questions[question]
         model.update_data(object_id, question, new_weight)
-    if right:
-        model.update_times_played(object_id)
+        
+    model.update_times_played(object_id)
+        
     if config.RECORD_USER:
-        model.record_playlog(object_id, asked_questions, right)
+        model.record_playlog(object_id, asked_questions, True)
 
 def sort_objects_values(objects_values):
     pass

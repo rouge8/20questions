@@ -63,9 +63,8 @@ class guess:
         
         if not(chosen_id):
             chosen_id=1
-        if a in ['no', 'teach me']:
-            game.learn(session.asked_questions, int(chosen_id), False) # learns that the guess was wrong
             
+        if a in ['no', 'teach me']:            
             raise web.seeother('/learn')
         elif a in ['yes']:
             game.learn(session.asked_questions, int(chosen_id))
@@ -76,7 +75,7 @@ class guess:
             
 class learn:
     def GET(self):
-        nearby_objects = game.get_nearby_objects(session.objects_values, 20)
+        nearby_objects = game.get_nearby_objects(session.objects_values, how_many=20)
         return render.learn(nearby_objects)
         
     def POST(self):
@@ -90,7 +89,7 @@ class learn:
         if question:
             new_question_answer = inputs.get('new_question_answer')
             if new_question_answer in ['yes','no','unsure']:
-                answer = eval('game.' + new_question_answer) * 5
+                answer = eval('game.' + new_question_answer) * game.NEW_QUESTION_SCALE
                 # strongly weights new answer
             else: answer = game.unsure
         
