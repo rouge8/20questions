@@ -53,8 +53,7 @@ def learn(asked_questions, object_id):
         
     model.update_times_played(object_id)
         
-    if config.RECORD_USER:
-        model.record_playlog(object_id, asked_questions, True)
+    model.record_playlog(object_id, asked_questions, True)
 
 def sort_objects_values(objects_values):
     pass
@@ -92,8 +91,6 @@ def entropy(objects, question):
         frac_unknowns = 0
     
     entropy = frac_positives + frac_negatives + frac_unknowns
-    #entropy = entropy * total # weights values
-    #entropy = entropy / len(objects) # average
     if entropy != 0: entropy = 1/entropy #minimizes rather than maximizes
     else: entropy = float('inf')
     
