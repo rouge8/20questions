@@ -11,7 +11,7 @@ import random, math
 yes = 1
 no = -1
 unsure = 0
-WEIGHT_CUTOFF = 15
+WEIGHT_CUTOFF = 25
 RETRAIN_SCALE = 2
 NEW_QUESTION_SCALE = 5
 
