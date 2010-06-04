@@ -91,6 +91,7 @@ def entropy(objects, question):
         frac_unknowns = 0
     
     entropy = frac_positives + frac_negatives + frac_unknowns
+    
     if entropy != 0: entropy = 1/entropy #minimizes rather than maximizes
     else: entropy = float('inf')
     
@@ -108,9 +109,9 @@ def dan_entropy(objects,question):
     question_entropy -= negatives * 1
     question_entropy += unknowns * 5 # arbitrary weight to discourage questions with lots of unknowns
     
-    return question_entropy
+    return abs(question_entropy)
                         
-def choose_question(initial_questions, objects_values, asked_questions, how_many=20):
+def choose_question(initial_questions, objects_values, asked_questions, how_many=10):
     
     if initial_questions:
         question = initial_questions.pop(0)
@@ -124,7 +125,7 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
         sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]
         
-        OBJECTS_TO_ENTROPY = [object[1] for object in most_likely_objects]
+        objects = [object[1] for object in most_likely_objects]
         
         questions = model.get_questions()
         best_question_entropy = abs(float('inf'))
@@ -132,14 +133,13 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
         
         for question in questions: # loop through all the questions
             if not(question.id in asked_questions): # if we have not already asked it, condider it
-                
-                question_entropy = entropy(OBJECTS_TO_ENTROPY, question)
-                #question_entropy = dan_entropy(OBJECTS_TO_ENTROPY, question)
-                
-                if abs(question_entropy) <= best_question_entropy:
-                    best_question_entropy = abs(question_entropy)
+                question_entropy = entropy(objects, question)
+                if question_entropy <= best_question_entropy:
+                    best_question_entropy = question_entropy
                     best_question = question
-                    print abs(best_question_entropy), question.text
+                    
+                    print best_question_entropy, question.text
+                    
         question = best_question
     return question
 
