@@ -11,7 +11,7 @@ import random, math
 yes = 1
 no = -1
 unsure = 0
-WEIGHT_CUTOFF = 25
+WEIGHT_CUTOFF = 10
 RETRAIN_SCALE = 2
 NEW_QUESTION_SCALE = 5
 
@@ -21,14 +21,7 @@ def guess(objects_values):
     if objects_values == {}: # nothing in the database :(
         return None
     else:
-        max = float('-inf')
-        for object in objects_values:
-            value = objects_values[object]
-            if value > max:
-                max = value
-                id = object
-        chosen = model.get_object_by_id(id)
-        
+        chosen = get_nearby_objects(objects_values, how_many=1)[0]     
         return chosen
             
 def learn_character(asked_questions, name):
@@ -82,14 +75,16 @@ def entropy(objects, question):
         frac_negatives = (-1*negatives)/total * math.log(negatives/total, 2)
     else:
         frac_negatives = 0
-    if unknowns != 0:
-        frac_unknowns = (-1*unknowns)/total * math.log(unknowns/total, 2)
-    else:
-        frac_unknowns = 0
+    #if unknowns != 0:
+        #frac_unknowns = (-1*unknowns)/total * math.log(unknowns/total, 2)
+    #else:
+        #frac_unknowns = 0
     
-    entropy = frac_positives + frac_negatives + frac_unknowns
+    entropy = frac_positives + frac_negatives #+ frac_unknowns
     
-    if entropy != 0: entropy = 1/entropy #minimizes rather than maximizes
+    entropy *= (positives + negatives)/total # weighted average
+    
+    if entropy != 0: entropy = 1/entropy # minimizes rather than maximizes
     else: entropy = float('inf')
     
     return entropy
@@ -156,6 +151,8 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                    in objects_values, but that is probably slower.'''
                 if weight.value > WEIGHT_CUTOFF:
                     value = WEIGHT_CUTOFF
+                elif weight.value < unsure:
+                    value = weight.value / 2 # lessens impact of strong negatives
                 else:
                     value = weight.value
                 
