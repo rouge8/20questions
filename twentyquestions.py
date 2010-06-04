@@ -55,12 +55,9 @@ def learn(asked_questions, object_id):
         
     model.record_playlog(object_id, asked_questions, True)
 
-def sort_objects_values(objects_values):
-    pass
-
-def get_nearby_objects(objects_values, how_many=10): ## need better variable name
-    sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()]) ################### GET OBJECT BY ID
-    sorted_objects_values.reverse()  ######### change way it sorts
+def get_nearby_objects(objects_values, how_many=10):
+    sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()])
+    sorted_objects_values.reverse()
     
     if sorted_objects_values:
         nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
@@ -186,14 +183,14 @@ def load_objects_values():
     
     return objects_values
 
-def reset_game():
-    global asked_questions
-    global initial_questions
-    global objects_values
+#def reset_game():
+    #global asked_questions
+    #global initial_questions
+    #global objects_values
     
-    asked_questions = {}
-    initial_questions = []
-    objects_values = {}
+    #asked_questions = {}
+    #initial_questions = []
+    #objects_values = {}
 
 
 if __name__ == '__main__':
