@@ -156,22 +156,25 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                    in objects_values, but that is probably slower.'''
                 if weight.value > WEIGHT_CUTOFF:
                     value = WEIGHT_CUTOFF
-                elif weight.value < unsure:
-                    value = weight.value / 2 # decrease the weights of 'no' answers
                 else:
                     value = weight.value
+                
+                if answer == no and value > 0 or answer == yes and value < 0:
+                    answer *= 10 # penalizes disagreement more
                 objects_values[weight.object_id] += answer*value
         asked_questions[question_id] = answer
 
 def load_initial_questions():
     initial_questions = []
-    initial_questions.append(model.get_question_by_id(1))
+    initial_questions.append(model.get_question_by_id(1)) # is character real
     questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
     
     for i in range(2): # up to 2 initial random questions
         q = random.choice(questions)
         if not(q in initial_questions):
             initial_questions.append(q)
+    
+    initial_questions.append(model.get_question_by_id(6)) # is the character a man
     
     return initial_questions
 
@@ -182,16 +185,6 @@ def load_objects_values():
         objects_values[object.id] = 0
     
     return objects_values
-
-#def reset_game():
-    #global asked_questions
-    #global initial_questions
-    #global objects_values
-    
-    #asked_questions = {}
-    #initial_questions = []
-    #objects_values = {}
-
 
 if __name__ == '__main__':
     ##### Tests entropy! #####
