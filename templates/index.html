@@ -24,12 +24,11 @@ $elif question:
     <form action="/restart" method="post">
         <input type="submit" value="restart">
     </form>
-$else:
-    <p>I DO NOT KNOW WHAT TO DO HERE. (guess)</p>
 
 $if nearby_objects_values:
     <h2>Considering...</h2>
     $for i in range(len(nearby_objects_values)):
         $ value = nearby_objects_values[i][0]
         $ object = nearby_objects_values[i][1]
-        <p>$object.name = $value</p>
+        $if object:
+            <p>$object.name = $value</p>

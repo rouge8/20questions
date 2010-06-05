@@ -90,11 +90,15 @@ def get_nearby_objects_values(objects_values, how_many=10):
     return nearby_objects_values
 
 def entropy(objects, question):
+    '''Returns an entropy value. This algorithm for entropy is heavily modeled
+       on the ID3 decision tree algorithm for entropy. The difference is that here,
+       we want what would traditionally be a high entropy. To adjust for this,
+       we take the reciprocal of entropy before returning it.'''
+       
     objects = tuple(objects) # necessary for SQL IN statement to work
     positives = model.get_num_positives(objects, question.id) *1.0
     negatives = model.get_num_negatives(objects, question.id) *1.0
-    unknowns = model.get_num_unknowns(objects, question.id) *1.0
-    total = positives + negatives + unknowns
+    total = len(objects)
     
     if positives != 0:
         frac_positives = (-1*positives)/total * math.log(positives/total, 2)
@@ -104,12 +108,8 @@ def entropy(objects, question):
         frac_negatives = (-1*negatives)/total * math.log(negatives/total, 2)
     else:
         frac_negatives = 0
-    #if unknowns != 0:
-        #frac_unknowns = (-1*unknowns)/total * math.log(unknowns/total, 2)
-    #else:
-        #frac_unknowns = 0
     
-    entropy = frac_positives + frac_negatives #+ frac_unknowns
+    entropy = frac_positives + frac_negatives
     
     entropy *= (positives + negatives)/total # weighted average
     
