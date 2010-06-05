@@ -193,7 +193,7 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                     value = weight.value
                 
                 if (answer == no and value > 0) or (answer == yes and value < 0):
-                    value *= 10 # penalizes disagreement more
+                    value *= 5 # penalizes disagreement more
                     
                 objects_values[weight.object_id] += answer*value
         asked_questions[question_id] = answer
