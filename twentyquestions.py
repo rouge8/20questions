@@ -163,8 +163,6 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
                     best_question_entropy = question_entropy
                     best_question = question
                     
-                    print best_question_entropy, question.text
-                    
         question = best_question
     return question
 
