@@ -1,4 +1,4 @@
-$def with (question, count, nearby_objects)
+$def with (question, count, nearby_objects_values)
 
 
 $if question == 'begin':
@@ -27,7 +27,9 @@ $elif question:
 $else:
     <p>I DO NOT KNOW WHAT TO DO HERE. (guess)</p>
 
-$if nearby_objects:
+$if nearby_objects_values:
     <h2>Considering...</h2>
-    $for object in nearby_objects:
-        <p>$object.name</p>
+    $for i in range(len(nearby_objects_values)):
+        $ value = nearby_objects_values[i][0]
+        $ object = nearby_objects_values[i][1]
+        <p>$object.name = $value</p>

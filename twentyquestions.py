@@ -1,23 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       twentyquestions.py
+'''
+    twentyquestions.py
+    
+    Andy Freeland and Dan Levy
+    5 June 2010
+    
+    Contains the game logic for a twenty questions player.
+'''
 
 
 import web
 import config, model
 import random, math
 
-yes = 1
-no = -1
-unsure = 0
-WEIGHT_CUTOFF = 10
-RETRAIN_SCALE = 2
-NEW_QUESTION_SCALE = 5
+yes = 1 # value of a yes answer
+no = -1 # value of a no answer
+unsure = 0 # value of an unsure answer
+WEIGHT_CUTOFF = 10 # caps weights in knowledgebase
+RETRAIN_SCALE = 2 # scale for weights set through the admin interface
+NEW_QUESTION_SCALE = 5 # scale for weights learned through the new question/guess page
 
 
 def guess(objects_values):
-    # return thing with highest weight from dictionary or top of heap
+    '''Returns the object with the highest value.'''
+    
     if objects_values == {}: # nothing in the database :(
         return None
     else:
@@ -25,6 +33,8 @@ def guess(objects_values):
         return chosen
             
 def learn_character(asked_questions, name):
+    '''Adds a new object to the database and then learns that object. Returns
+       the id of that object.'''
     if name.strip() != '':
         object = model.get_object_by_name(name)
         if object: # character in database
@@ -33,10 +43,11 @@ def learn_character(asked_questions, name):
         else:
             new_object_id = model.add_object(name) ### adds to database and trains
             learn(asked_questions, new_object_id)
-            # maybe scale the numbers so more than 1
             return new_object_id
         
 def learn(asked_questions, object_id):
+    '''Updates the data for the correct object based on information in asked_questions.
+       Also updates times played for the object and stores the playlog.'''
     for question in asked_questions:
         current_weight = model.get_value(object_id, question)
         if not(current_weight): current_weight = 0
@@ -48,9 +59,22 @@ def learn(asked_questions, object_id):
         
     model.record_playlog(object_id, asked_questions, True)
 
-def get_nearby_objects(objects_values, how_many=10):
-    sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()])
+def sort_objects_values(objects_values):
+    '''Returns a list of the objects with the highest values in the local knowledge base.'''
+    
+    sorted_objects_values = sorted([(value, key) for (key, value) in objects_values.items()])
     sorted_objects_values.reverse()
+    
+    return sorted_objects_values
+
+def get_nearby_objects(objects_values, how_many=10):
+    '''Returns how_many objects with the highest values in the local knowledge base.
+       Default: how_many=10.'''
+       
+    sorted_objects_values = sort_objects_values(objects_values)
+    
+    if how_many > len(sorted_objects_values):
+        how_many = len(sorted_objects_values)
     
     if sorted_objects_values:
         nearby_objects = [model.get_object_by_id(sorted_objects_values[i][1]) for i in range(how_many)]
@@ -58,7 +82,22 @@ def get_nearby_objects(objects_values, how_many=10):
         nearby_objects = []
         
     return nearby_objects
+
+def get_nearby_objects_values(objects_values, how_many=10):
+    '''Returns how_many (value, object) pairs with the highest values in the local
+       knowledge base. Default: how_many=10.'''
+       
+    sorted_objects_values = sort_objects_values(objects_values)
     
+    if how_many > len(sorted_objects_values):
+        how_many = len(sorted_objects_values)
+    
+    if sorted_objects_values:
+        nearby_objects_values = [(sorted_objects_values[i][0], model.get_object_by_id(sorted_objects_values[i][1])) for i in range(how_many)]
+    else:
+        nearby_objects_values = []
+        
+    return nearby_objects_values
 
 def entropy(objects, question):
     objects = tuple(objects) # necessary for SQL IN statement to work
@@ -89,7 +128,11 @@ def entropy(objects, question):
     
     return entropy
 
-def dan_entropy(objects,question):
+def simple_entropy(objects,question):
+    '''Returns an entropy value for a question based on the weights for all the
+       objects. Entropy is low if for a given question, the number of yes and no
+       answers is about even, and the number of unsure answers is low.'''
+    
     objects = tuple(objects) # necessary for SQL IN statement to work
     positives = model.get_num_positives(objects, question.id)
     negatives = model.get_num_negatives(objects, question.id)
@@ -104,17 +147,17 @@ def dan_entropy(objects,question):
     return abs(question_entropy)
                         
 def choose_question(initial_questions, objects_values, asked_questions, how_many=10):
+    '''Returns a question with the lowest entropy.'''
     
     if initial_questions:
         question = initial_questions.pop(0)
     else:
-        sorted_objects_values = sorted([(value,key) for (key,value) in objects_values.items()])
+        sorted_objects_values = sorted_objects_values = sort_objects_values(objects_values)
         if len(sorted_objects_values) <= how_many: ### possibly some proportion of the objects in the database
             max = len(sorted_objects_values)
         else:
             max = how_many
         
-        sorted_objects_values.reverse()  ######### change way it sorts
         most_likely_objects = sorted_objects_values[:max]
         
         objects = [object[1] for object in most_likely_objects]
@@ -136,6 +179,9 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
     return question
 
 def update_local_knowledgebase(objects_values, asked_questions, question_id, answer):
+    '''Updates the the values for the current candidates based on the previus
+       question and reply by the user.'''
+    
     if not(answer in [yes, no, unsure]):
         raise Exception('Invalid Answer')
     else:
@@ -151,17 +197,23 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                    in objects_values, but that is probably slower.'''
                 if weight.value > WEIGHT_CUTOFF:
                     value = WEIGHT_CUTOFF
+                elif weight.value < -1 * WEIGHT_CUTOFF:
+                    value = -1 * WEIGHT_CUTOFF
                 elif weight.value < unsure:
                     value = weight.value / 2 # lessens impact of strong negatives
                 else:
                     value = weight.value
                 
-                if answer == no and value > 0 or answer == yes and value < 0:
-                    answer *= 10 # penalizes disagreement more
+                if (answer == no and value > 0) or (answer == yes and value < 0):
+                    value *= 10 # penalizes disagreement more
+                    
                 objects_values[weight.object_id] += answer*value
         asked_questions[question_id] = answer
 
 def load_initial_questions():
+    '''Loads questions we always want to ask as well as some random ones so that we can learn more
+       about the objects.'''
+    
     initial_questions = []
     initial_questions.append(model.get_question_by_id(1)) # is character real
     questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
@@ -176,6 +228,8 @@ def load_initial_questions():
     return initial_questions
 
 def load_objects_values():
+    '''Initializes objects values, a list with an entry for each object, initialized at 0.'''
+    
     objects_values = {}
     objects = model.get_objects()
     for object in objects:
@@ -192,5 +246,5 @@ if __name__ == '__main__':
     
     for question in questions:
         print question.id
-        print 'DAN:', dan_entropy(objects, question)
+        print 'DAN:', simple_entropy(objects, question)
         print 'ANDY:', entropy(objects, question)
