@@ -22,42 +22,32 @@ WEIGHT_CUTOFF = 10 # caps weights in knowledgebase
 RETRAIN_SCALE = 2 # scale for weights set through the admin interface
 NEW_QUESTION_SCALE = 5 # scale for weights learned through the new question/guess page
 
-
-def guess(objects_values):
-    '''Returns the object with the highest value.'''
+def load_initial_questions():
+    '''Loads questions we always want to ask as well as some random ones so that we can learn more
+       about the objects.'''
     
-    if objects_values == {}: # nothing in the database :(
-        return None
-    else:
-        chosen = get_nearby_objects(objects_values, how_many=1)[0]     
-        return chosen
-            
-def learn_character(asked_questions, name):
-    '''Adds a new object to the database and then learns that object. Returns
-       the id of that object.'''
-    if name.strip() != '':
-        object = model.get_object_by_name(name)
-        if object: # character in database
-            learn(asked_questions, object.id)
-            return object.id
-        else:
-            new_object_id = model.add_object(name) ### adds to database and trains
-            learn(asked_questions, new_object_id)
-            return new_object_id
-        
-def learn(asked_questions, object_id):
-    '''Updates the data for the correct object based on information in asked_questions.
-       Also updates times played for the object and stores the playlog.'''
-    for question in asked_questions:
-        current_weight = model.get_value(object_id, question)
-        if not(current_weight): current_weight = 0
-        
-        new_weight = current_weight + asked_questions[question]
-        model.update_data(object_id, question, new_weight)
-        
-    model.update_times_played(object_id)
-        
-    model.record_playlog(object_id, asked_questions, True)
+    initial_questions = []
+    initial_questions.append(model.get_question_by_id(1)) # is character real
+    questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
+    
+    for i in range(2): # up to 2 initial random questions
+        q = random.choice(questions)
+        if not(q in initial_questions):
+            initial_questions.append(q)
+    
+    initial_questions.append(model.get_question_by_id(6)) # is the character a man
+    
+    return initial_questions
+
+def load_objects_values():
+    '''Initializes objects values, a list with an entry for each object, initialized at 0.'''
+    
+    objects_values = {}
+    objects = model.get_objects()
+    for object in objects:
+        objects_values[object.id] = 0
+    
+    return objects_values
 
 def sort_objects_values(objects_values):
     '''Returns a list of the objects with the highest values in the local knowledge base.'''
@@ -66,7 +56,7 @@ def sort_objects_values(objects_values):
     sorted_objects_values.reverse()
     
     return sorted_objects_values
-
+    
 def get_nearby_objects(objects_values, how_many=10):
     '''Returns how_many objects with the highest values in the local knowledge base.
        Default: how_many=10.'''
@@ -145,7 +135,7 @@ def simple_entropy(objects,question):
     question_entropy += unknowns * 5 # arbitrary weight to discourage questions with lots of unknowns
     
     return abs(question_entropy)
-                        
+
 def choose_question(initial_questions, objects_values, asked_questions, how_many=10):
     '''Returns a question with the lowest entropy.'''
     
@@ -210,32 +200,42 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                 objects_values[weight.object_id] += answer*value
         asked_questions[question_id] = answer
 
-def load_initial_questions():
-    '''Loads questions we always want to ask as well as some random ones so that we can learn more
-       about the objects.'''
+def guess(objects_values):
+    '''Returns the object with the highest value.'''
     
-    initial_questions = []
-    initial_questions.append(model.get_question_by_id(1)) # is character real
-    questions = list(model.get_questions()) # converts from webpy's IterBetter to a list
-    
-    for i in range(2): # up to 2 initial random questions
-        q = random.choice(questions)
-        if not(q in initial_questions):
-            initial_questions.append(q)
-    
-    initial_questions.append(model.get_question_by_id(6)) # is the character a man
-    
-    return initial_questions
+    if objects_values == {}: # nothing in the database :(
+        return None
+    else:
+        chosen = get_nearby_objects(objects_values, how_many=1)[0]     
+        return chosen
+            
+def learn_character(asked_questions, name):
+    '''Adds a new object to the database and then learns that object. Returns
+       the id of that object.'''
+    if name.strip() != '':
+        object = model.get_object_by_name(name)
+        if object: # character in database
+            learn(asked_questions, object.id)
+            return object.id
+        else:
+            new_object_id = model.add_object(name) ### adds to database and trains
+            learn(asked_questions, new_object_id)
+            return new_object_id
+        
+def learn(asked_questions, object_id):
+    '''Updates the data for the correct object based on information in asked_questions.
+       Also updates times played for the object and stores the playlog.'''
+    for question in asked_questions:
+        current_weight = model.get_value(object_id, question)
+        if not(current_weight): current_weight = 0
+        
+        new_weight = current_weight + asked_questions[question]
+        model.update_data(object_id, question, new_weight)
+        
+    model.update_times_played(object_id)
+        
+    model.record_playlog(object_id, asked_questions, True)
 
-def load_objects_values():
-    '''Initializes objects values, a list with an entry for each object, initialized at 0.'''
-    
-    objects_values = {}
-    objects = model.get_objects()
-    for object in objects:
-        objects_values[object.id] = 0
-    
-    return objects_values
 
 if __name__ == '__main__':
     ##### Tests entropy! #####

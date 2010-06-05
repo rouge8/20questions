@@ -1,7 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#       webinterface.py
+'''
+    webinterface.py
+    
+    Andy Freeland and Dan Levy
+    5 June 2010
+    
+    Web interface to the twenty questions game. Each page/url is represented by
+    a class. Uses the web.py library from http://webpy.org. Stores user data in
+    a sesssion. HTML pages are stored in the templates directory, while static
+    files such as CSS and fonts are stored in the static directory.
+'''
 
 import web
 import config, model
@@ -19,25 +29,25 @@ urls = (
     '/admin', admin.app
 )
 
-session_vars = {'count': 1, 'asked_questions': {}, 'initial_questions': [], 'objects_values': {}}
 app = web.application(urls, globals())
-session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=session_vars)
-
-
 render = web.template.render('templates', base='base')
 
+session_vars = {'count': 1, 'asked_questions': {}, 'initial_questions': [], 'objects_values': {}}
+session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=session_vars)
+
 def reset_game():
+    '''Kills the session.'''
     session.kill()
     
 
 class index:
     def GET(self):
-        # show the index!
+        '''Shows the index page and asks the questions.'''
         
-        if config.DEBUG_MODE: # clean up this section somehow
-            nearby_objects = game.get_nearby_objects(session.objects_values, how_many=10)
+        if config.DISPLAY_CANDIDATES: # clean up this section somehow
+            nearby_objects_values = game.get_nearby_objects_values(session.objects_values, how_many=10)
         else:
-            nearby_objects = None
+            nearby_objects_values = None
         
         if not(session.get('asked_questions')) and not(session.get('initial_questions')):
             question = 'begin'
@@ -45,20 +55,45 @@ class index:
             question = game.choose_question(session.initial_questions, session.objects_values, session.asked_questions)
             if question == None or session.count > 20:
                 raise web.seeother('/guess')
-        return render.index(question, session.get('count'), nearby_objects)
+        return render.index(question, session.get('count'), nearby_objects_values)
+
+class begin:
+    def POST(self):
+        '''Initializes the session and returns to the index.'''
+        
+        session.initial_questions = game.load_initial_questions()
+        session.objects_values = game.load_objects_values()
+                        
+        raise web.seeother('/')
 
 class restart:
     def POST(self):
+        '''Restarts the game.'''
         reset_game()
+        raise web.seeother('/')
+
+class answer:
+    def POST(self, question_id):
+        '''Updates the local knowledgebase with the answer given to the question_id.'''
+        
+        question_id = int(question_id) # otherwise it's unicode
+        a = web.input().answer
+        if a in ['yes','no','unsure']: answer = eval('game.' + a)
+        else: answer = game.unsure
+        if answer != game.unsure:
+            session.count += 1
+        game.update_local_knowledgebase(session.objects_values, session.asked_questions, question_id, answer)
         raise web.seeother('/')
 
 class guess:
     def GET(self, chosen_id=None):
-        # guess!
+        '''Displays the computer's guess of who the user is thinking of.'''
         chosen = game.guess(session.objects_values)
         return render.guess(chosen)
         
     def POST(self, chosen_id=None):
+        '''Learns whether the guess was correct or not. If 'yes', learn and restart.
+           If 'no', go to 'learn' to learn a new character.'''
         a = web.input().answer
         
         if not(chosen_id):
@@ -75,10 +110,15 @@ class guess:
             
 class learn:
     def GET(self):
+        '''Renders the learn page, allowing the user to select the correct character
+           and add a new question.'''
         nearby_objects = game.get_nearby_objects(session.objects_values, how_many=20)
         return render.learn(nearby_objects)
         
     def POST(self):
+        '''Processes the learning form and learns the correct character and new
+           question.'''
+           
         inputs = web.input()
         
         name = inputs.get('name')
@@ -117,29 +157,8 @@ class learn:
                 
         raise web.seeother('/')
 
-class begin:
-    def POST(self):
-                
-        session.initial_questions = game.load_initial_questions()
-        session.objects_values = game.load_objects_values()
-                        
-        raise web.seeother('/')
-
-class answer:
-    def POST(self, question_id):
-        
-        question_id = int(question_id) # otherwise it's unicode
-        a = web.input().answer
-        if a in ['yes','no','unsure']: answer = eval('game.' + a)
-        else: answer = game.unsure
-        if answer != game.unsure:
-            session.count += 1
-        game.update_local_knowledgebase(session.objects_values, session.asked_questions, question_id, answer)
-        raise web.seeother('/')
-
-
-
 if __name__ == '__main__':
+    '''Runs the app.'''
     if web.config.debug:
         app.internalerror = web.debugerror
     app.run()

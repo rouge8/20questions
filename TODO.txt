@@ -7,18 +7,8 @@ ASK USER IF THEY'D LIKE TO ANSWER A FEW MORE QUESTIONS IF GUESS WAS WRONG?
 
 http://net.tutsplus.com/tutorials/javascript-ajax/submit-a-form-without-page-refresh-using-jquery/
 
-change guess to look at the character with the most right? (that might already be what it does. WHO KNOWS?)
-
-display candidates option on ask pages.
-
-BUILD QUESTION MANAGER
-
-FIX FORM ALIGNMENT (checkboxes and radios)
-
 ADMIN PAGE LOGINS
     http://dloewenherz.blogspot.com/2010/01/openid-clickpass-webpy-and-python.html
     or do this the crappy way ourselves. or just don't worry for the project.
 
 guess once value is over 100?
-
-LOOK AT UPDATE_LOCAL_KNOWLEDGEBASE
