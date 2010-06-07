@@ -18,6 +18,8 @@ Beyond the main game logic, we used the python library web.py to create a web ba
 
 Error handling is minimal at the moment, because whenever something has crashed, that has been incredibly helpful in finding bugs (for obvious reasons). Everything that has caused crashes has been fixed, and things that are likely to raise exceptions have been put in Try/Except blocks, but it's entirely likely there are things we never managed to break that will still raise exceptions.
 
+The web interface currently displays the list of characters being considered AND the value it has for them at any given stage, which we think is kind of cool.
+
 ==TO RUN==
 To run the program, enter 'python webinterface.py' into the terminal.
 
