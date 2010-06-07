@@ -32,7 +32,7 @@ def load_initial_questions():
     
     for i in range(2): # up to 2 initial random questions
         q = random.choice(questions)
-        if not(q in initial_questions):
+        if not(q in initial_questions) and not(q.id in [1,6]): # real/man
             initial_questions.append(q)
     
     initial_questions.append(model.get_question_by_id(6)) # is the character a man
