@@ -1,9 +1,10 @@
-TWENTY QUESTIONS FINAL PROJECT WRITE-UP
-Andy Freeland and Dan Levy
-June 6, 2010
------------------------------------------------
+# TWENTY QUESTIONS FINAL PROJECT WRITE-UP
 
-# Description
+Andy Freeland and Dan Levy
+
+June 6, 2010
+
+## Description
 
 Our program implements a version of 20 questions. It does so by having a table of objects and a table of questions and having another table with a correlation between objects and questions. Depending on a user's answers, the computer guesses the object which has the most correlation with the questions asked.
 
@@ -21,7 +22,7 @@ Error handling is minimal at the moment, because whenever something has crashed,
 
 The web interface currently displays the list of characters being considered AND the value it has for them at any given stage, which we think is kind of cool.
 
-# To Run
+## To Run
 To run the program, enter 'python webinterface.py' into the terminal.
 
 You can specify an optional port number, but by default it'll run on port 8080, so open http://localhost:8080/ in a web browser to access it. admin pages can be reached at http://localhost:8080/admin
@@ -31,5 +32,5 @@ Requires SQLite3, which is included in Python on OS X, Windows, and Linux.
 
 Due to a bug in the version of PySQLite that ships with OS X Leopard, our code won't run on any of the labs. It does however, run on prism. We tested primarily on Linux with Python 2.6.2 and SQLite 3.6.20. It also works on Windows 7 with the Python 2.6.4 download from python.org. As we don't have Windows XP or other version of Python, we were unable to test it on them.
 
-# The Future
+## The Future
 Along with the improvements that we want to make (as described above), we want to find our program a home on the internet so people can play anytime!
