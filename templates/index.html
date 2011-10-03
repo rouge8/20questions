@@ -30,5 +30,5 @@ $if nearby_objects_values:
     $for i in range(len(nearby_objects_values)):
         $ value = nearby_objects_values[i][0]
         $ object = nearby_objects_values[i][1]
-        $if object:
+        $if object and value > 0:
             <p>$object.name = $value</p>
